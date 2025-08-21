@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/catr1x/Desktop/Learn-Cpp/1 - Running and Debugging Cpp Program/main'
+relocations:     []
+...
