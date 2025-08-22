@@ -3,10 +3,12 @@ Using VSCode + clang/gcc
 
 ## Installing & Configuring the compiler/debugger
 - For MacOS (with Clang):
-        **Note**: *Sometimes vscode complies your source code as C instead of C++.* 
-
-        In that case, change `/usr/bin/clang` to `/usr/bin/clang++` in the configuration file to ensure the C++ Standard Library is linked correctly.
+    [Using VSCode with Clang on MacOS](https://code.visualstudio.com/docs/cpp/config-clang-mac)
+    
+    **Note**: *Sometimes vscode complies your source code as C instead of C++.* 
+    In that case, change `/usr/bin/clang` to `/usr/bin/clang++` in the configuration file to ensure the C++ Standard Library is linked correctly.
 - For Windows (Using MinGW-w64):
+    [Using VSCode with g++ on Windows](https://code.visualstudio.com/docs/cpp/config-mingw)
 
 ## Compile & Run Code
 1. Press the play button in the top right corner of the editor. ![alt text](images/1.png)
