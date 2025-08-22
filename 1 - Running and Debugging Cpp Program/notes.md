@@ -1,15 +1,16 @@
 # 1 - Running and Debugging C++ Programs
 Using VSCode + clang/gcc
 
+## Installing & Configuring the compiler/debugger
+- For MacOS (with Clang):
+        **Note**: *Sometimes vscode complies your source code as C instead of C++.* 
+
+        In that case, change `/usr/bin/clang` to `/usr/bin/clang++` in the configuration file to ensure the C++ Standard Library is linked correctly.
+- For Windows (Using MinGW-w64):
 
 ## Compile & Run Code
 1. Press the play button in the top right corner of the editor. ![alt text](images/1.png)
-
-2. A configuration file is generated at `.vscode/tasks.json`
-
-    **Note**: *Sometimes vscode complies your source code as C instead of C++.* 
-
-    In that case, change `/usr/bin/clang` to `/usr/bin/clang++` in the configuration file to ensure the C++ Standard Library is linked correctly.
+        
 
 ## Debugging
 1. Set a breakpoint by clicking on the empty space on the left of a line ![alt text](images/2.png)
