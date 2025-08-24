@@ -1,5 +1,8 @@
 #include<iostream>
 
+// global constants defined at the head of the code
+#define pi 3.1415
+
 int main()
 {
     // Part1: Variable Define & Initialize
@@ -36,11 +39,22 @@ int main()
     // Entering a123 will become 0 (extraction fails)
     // Entering 5.6 will become 5 (integer part)
 
-    // Part4: Char & String
+    // Part4: Char, String and Constants
     char ch {'a'};
     std::string s {"hello"};
     std::cout<<ch<<std::endl;
     std::cout<<s<<std::endl;
+
+    // Define multiple constants in a line
+    // Note that these two constants are actually variables evaluated in runtime
+    const int num1{b}, num2{c};
+    
+    // To force the constant to be static, use constexpr
+    constexpr double gravity{9.8}; // Valid because 9.8 is fundamental constant
+    constexpr double someConstant{gravity * pi}; // valid because gravity is constexpr and pi is pre-defined global constant
+    std::cout << someConstant << std::endl;
+    // constexpr double someVar {x} // Compiler error because x is initialized in runtime 
+
 
     // Part5: Object sizes
     std::cout << "Size of an integer: " << sizeof(a)<<std::endl;
