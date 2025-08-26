@@ -2,18 +2,16 @@
 #include<vector>
 #include<string>
 
-using namespace std;
-
 int main() 
 {
-    vector<string> msg{"Hello", "World"};
+    std::vector<std::string> msg{"Hello", "World"};
 
-    for (string &word : msg) 
+    for (std::string &word : msg) 
     {
-        cout << word << " "; // The red dot shows a breaking point
+        std::cout << word << " "; // The red dot shows a breaking point
     }
 
-    cout<<endl;
+    std::cout<<std::endl;
 
     return 0;
 }
