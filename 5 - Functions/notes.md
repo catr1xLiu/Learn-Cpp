@@ -1,4 +1,4 @@
-# 5 - Functions & Files
+# 5 - Functions
 
 ## Outline:
 1. Functions with Forward Declarations in Source Files
