@@ -1,7 +1,8 @@
 # 5 - Functions
 
 ## Outline:
-1. Functions with Forward Declarations in Source Files
-2. Functions with Forward Declarations in Header Files
-3. Static Local Variables in Functions
-4. 
+1. Function Arguments, Default Arguments & Return Types
+2. Local Variables, Global Variables & Static Local Variables
+3. Function Overloading
+4. Deleting Functions
+5. Function Templates
