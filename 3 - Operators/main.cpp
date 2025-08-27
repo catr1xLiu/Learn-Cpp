@@ -29,6 +29,11 @@ int main()
     std::cout << (a && b) << std::endl; // a and b = false
     std::cout<< (a || false) << std::endl; // a or b = true
     std::cout << !a << std::endl; // not a = false
+
+    std::string s1 {"hello"};
+    std::string s2 {"hello"};
+    // in c++ we can directly compare strings using ==
+    std::cout<< (s2 == s1) << std::endl;
     
     std::cout<<std::endl;
 
