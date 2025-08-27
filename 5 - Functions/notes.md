@@ -6,3 +6,4 @@
 3. Function Overloading
 4. Deleting Functions
 5. Function Templates
+6. Anonymous Functions (Lambda Expression)

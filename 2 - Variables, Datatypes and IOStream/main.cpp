@@ -44,7 +44,6 @@ int main()
     std::string s {"hello"};
     std::cout<<ch<<std::endl;
     std::cout<<s<<std::endl;
-
     // Define multiple constants in a line
     // Note that these two constants are actually variables evaluated in runtime
     const int num1{b}, num2{c};

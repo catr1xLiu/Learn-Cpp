@@ -1,7 +1,8 @@
 #include<iostream>
+// Part5: Anonymous Functions (Lambda Expressions)
 
 int main() {
-    // Part1 Basic Lambda
+    // 1. Basic Lambda
     auto add = [](int a, int b) {
         // a and b are parameters of the lambda
         return a+b;
@@ -20,7 +21,7 @@ int main() {
     std::cout<<std::endl<<std::endl;
 
 
-    // Part2: Reading variables from surrounding environment
+    // 2. Reading variables from surrounding environment
     int myVariable{5};
     auto lambdaWithReadAccessToExternalVariables = [=]() 
     {
@@ -38,7 +39,7 @@ int main() {
     std::cout<<std::endl<<std::endl;
 
 
-    // Part3: Modifying variables from surrounding environment
+    // 3. Modifying variables from surrounding environment
     std::cout<<"myVariable in scope main() (before) : "<<myVariable<<std::endl; // output: 5
     auto lambdaWithFullAccessToExternalVariables = [&]() 
     {
@@ -55,7 +56,7 @@ int main() {
     std::cout<<std::endl<<std::endl;
 
 
-    // Part3: Accessing specific values from surrounding environment
+    // 4. Accessing specific values from surrounding environment
     int x{10}, y{20};
     auto lambdaWithSpecificAccess = [x, &y]() 
     {
