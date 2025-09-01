@@ -41,9 +41,10 @@ int main()
 
     // Part4: Char, String and Constants
     char ch {'a'};
-    std::string s {"hello"};
+    std::string s {"hello"}; // Use std strings instead of C-Style strings because their better
     std::cout<<ch<<std::endl;
     std::cout<<s<<std::endl;
+    s = "abc"; // std strings have variable length
     // Define multiple constants in a line
     // Note that these two constants are actually variables evaluated in runtime
     const int num1{b}, num2{c};

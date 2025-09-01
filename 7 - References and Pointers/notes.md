@@ -1,7 +1,7 @@
 # 7 - References & Pointers
 
 ## Outline
-1. LValues
+1. LValues & RValues
 2. Pointers
 3. Pass by Address
 4. Return by Reference v.s. Return by Address
