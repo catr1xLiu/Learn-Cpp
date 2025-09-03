@@ -1,14 +1,15 @@
 #include<array>
 #include<cmath>
 #include<iostream>
+#include "stdio.h"
 
-double calculateGrade(double midTermScore, double finalScore, std::array<double, 5> projectScors) 
+double calculateGrade(double midTermScore, double finalScore, std::array<int, 5> projectScors) 
 {
     if (midTermScore < finalScore) midTermScore = finalScore;
     const double weightedExamScore = 3.0/4.0 * finalScore + 1.0/4.0 * midTermScore;
 
     double projectAverage = 0;
-    for (double& projectScore: projectScors)
+    for (double projectScore: projectScors)
     {
         if (projectScore < finalScore) projectScore = finalScore;
         projectAverage += projectScore;
@@ -24,6 +25,9 @@ double calculateGrade(double midTermScore, double finalScore, std::array<double,
 
 int main()
 {
-    const double score {calculateGrade(65.0, 74.0, std::array<double, 5>{95, 95, 95, 95, 95})};
-    std::cout << score << std::endl;
+    std::array<int, 5> projectScores {95, 95, 95, 95, 95};
+    const double score {calculateGrade(65.0, 74.0, projectScores)};
+    printf("%.2f\n", score);
+    // std::cout << score << std::endl;
+    return 0;
 }
