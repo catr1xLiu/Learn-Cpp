@@ -1,7 +1,6 @@
 #include<array>
 #include<cmath>
 #include<iostream>
-#include "stdio.h"
 
 double calculateGrade(double midTermScore, double finalScore, std::array<int, 5> projectScors) 
 {
@@ -27,7 +26,6 @@ int main()
 {
     std::array<int, 5> projectScores {95, 95, 95, 95, 95};
     const double score {calculateGrade(65.0, 74.0, projectScores)};
-    printf("%.2f\n", score);
-    // std::cout << score << std::endl;
+    std::cout << score << std::endl;
     return 0;
 }
