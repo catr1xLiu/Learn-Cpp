@@ -3,6 +3,7 @@
 #include<iostream>
 #include<sstream>
 #include<optional>
+#include <utility>
 
 /**
 * Determine the degree of the polynomial
@@ -47,13 +48,12 @@ std::string formatTerm(std::string expr, double coefficient, bool isFirstTerm)
   {
     // Looking at the case of negative coefficient
     // A minus sign always occurs before the expression
-    result += "-";
+    result += isFirstTerm ? "-" : " - ";
   } else
   {
     // Looking at the case of positive coefficient
     // Only append plus sign if this is not the first term 
-    if (!isFirstTerm)
-      result += "+";
+    result += isFirstTerm ? "" : " + ";
   } 
   
   // Now, let's add the Coefficient
@@ -118,17 +118,36 @@ std::optional<std::string> factoredForm(double a, double b, double c)
   if (delta == 0.0)
   {
     double root{ -b/(2*a) };
+    // Special case root is zero 
+    if (root == 0.0)
+      return formatTerm("x^2", a, true);
+    // Format (x-root) form 
     std::string insideBracket{ "x" + formatTerm("", -root, false) };
     return formatTerm("(" + insideBracket + ")^2", a, true);
   }
 
   // When delta > 0, there are two roots:
   double root1{ (-b+sqrt(delta)) / (2*a) }, root2{ (-b-sqrt(delta)) / (2*a) };
-  std::string insideBracket1{ "x" + formatTerm("", -root1, false) },
-    insideBracket2{ "x" + formatTerm("", -root2, false)};
-  return formatTerm("(" + insideBracket1 + ")" + "(" + insideBracket2 + ")", a, true);
+  
+  // Special case where one of the root is zero
+  // Always move the zero root to the form for easier formatting 
+  if (root2 == 0.0)
+    std::swap(root1, root2);
+  std::string bracket2{ "(x" + formatTerm("", -root2, false) + ")" };
+  if (root1 == 0.0)
+  {
+     return formatTerm("x", a, true) + bracket2;
+  }
+
+  std::string bracket1{ "(x" + formatTerm("", -root1, false) + ")" };
+  return formatTerm(bracket2 + bracket1, a, true);
 }
 
+/** 
+* Formats a quadratic polynomial to vertex form a(x-h) + k 
+* Handles linear / constant polynomial properly
+* @param an optional string representing the polynomial in vortex form, if the expression is a quadratic
+*/
 std::optional<std::string> vortexForm(double a, double b, double c)
 {
   if (degree(a, b, c) != 2)
@@ -136,13 +155,17 @@ std::optional<std::string> vortexForm(double a, double b, double c)
 
   double h{ -b / (2*a) };
   double k{ a * h*h + b*h + c };
-  std::cout << "h: " << h << ", k: " << k << std::endl;
-
-  std::string insideBracket{ "x" + formatTerm("", -h, false) };
 
   std::string k_str{ formatTerm("", k, false) };
+
+  // Special case where h = 0 
+  if (h == 0)
+    return formatTerm("x^2", a, true) + k_str; 
+
+
+  std::string insideBracket{ "x" + formatTerm("", -h, false) };
   
-  return formatTerm("(" + insideBracket + ")^2" + k_str, a, true);
+  return formatTerm("(" + insideBracket + ")^2", a, true) + k_str;
 }
 
 int main() 

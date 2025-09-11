@@ -32,10 +32,10 @@ double calculateGrade(
 
 /**
  * Calculates the score (out of 100) of a component based on the raw score
+ * @param maxScore the maximum allowed score for this component
  * @param rawScore the raw score of this component
- * @param maxScore the maximum allowed score of this component
  * */
-double scoreOutOf100(double rawScore, int maxScore)
+double scoreOutOf100(int maxScore, double rawScore)
 {
   return rawScore / maxScore * 100;
 }
@@ -51,7 +51,7 @@ int userInputMaxScore(std::string componentName)
   double userInput{};
   while (true)
   {
-    std::cout<< "Please Enter the maximum grade on " << componentName << ": ";
+    std::cout<< "Enter the maximum grade on " << componentName << ": ";
     std::cin >> userInput;
     if (std::round(userInput) != userInput)
     {
@@ -75,11 +75,11 @@ double userInputRawScore(std::string componentName, int maxScore)
   double userInput{};
   while (true)
   {
-    std::cout << "Please enter your grade on the: " << componentName << ": ";
+    std::cout << "Enter your grade on " << componentName << ": ";
     std::cin >> userInput;
     if (userInput > maxScore)
     {
-      std::cout << "Error: Input score is greater than max score of the component, please enter again" << std::endl;
+      std::cout << "<-- Error: Input score is greater than max score of the component, please enter again. -->" << std::endl;
       continue;
     }
 
@@ -94,8 +94,8 @@ int main()
   int midtermExamMaxScore{userInputMaxScore("the Midterm Examiniation")};
   double midtermExamRawScore{userInputRawScore("the Midterm Examination", midtermExamMaxScore)};
 
-  double finalScoreOutOf100 {scoreOutOf100(finalExamRawScore, finalExamMaxScore)};
-  double midtermScoreOutOf100 {scoreOutOf100(midtermExamRawScore, midtermExamMaxScore)};
+  double finalScoreOutOf100 {scoreOutOf100(finalExamMaxScore, finalExamRawScore)};
+  double midtermScoreOutOf100 {scoreOutOf100(midtermExamMaxScore, midtermExamRawScore)};
 
   int project1MaxScore {userInputMaxScore("project 1")};
   double project1RawScore {userInputRawScore("project 1", project1MaxScore)};
@@ -122,6 +122,6 @@ int main()
     project1Score, project2Score, project3Score,
     project4Score, project5Score)};
   int finalGradeRounded = std::round(finalGrade);
-  std::cout << "Your final grade: " << finalGradeRounded << std::endl;
+  std::cout << "Final Grade: " << finalGradeRounded << std::endl;
   return 0;
 }

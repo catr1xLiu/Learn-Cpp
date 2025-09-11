@@ -1,2 +1,14 @@
+Index:
+  StandardLibrary; Yes
+
+If:
+  PathMatch: .*\.c 
 CompileFlags:
-  Add: [-std=c++23]
+  Add: [-std=c17, -xc]
+
+--
+
+If: 
+  PathMatch: .*\cpp
+CompileFlags:
+  Add: [-std=c++23, -xc++]
