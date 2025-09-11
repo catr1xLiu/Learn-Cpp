@@ -53,14 +53,8 @@ int userInputMaxScore(std::string componentName)
   {
     std::cout<< "Enter the maximum grade on " << componentName << ": ";
     std::cin >> userInput;
-    if (userInput <= 0.0)
+    if (userInput <= 0.0 || std::round(userInput) != userInput)
     {
-      std::cout << "<-- Error: maximum grade must be positive, please check data. -->" << std::endl;
-      continue;
-    }
-    if (std::round(userInput) != userInput)
-    {
-      std::cout << "<-- Error: maximum score of a component must be an integer, please check data. -->" << std::endl;
       continue;
     }
 
@@ -82,14 +76,8 @@ double userInputRawScore(std::string componentName, int maxScore)
   {
     std::cout << "Enter your grade on " << componentName << ": ";
     std::cin >> userInput;
-    if (userInput < 0.0)
+    if (userInput < 0.0 || userInput > maxScore)
     {
-      std::cout << "Error: grade must be non-negative. Please check data. -->" << std::endl;
-      continue;
-    }
-    if (userInput > maxScore)
-    {
-      std::cout << "<-- Error: Input score is greater than max score of the component, please check data. -->" << std::endl;
       continue;
     }
 
