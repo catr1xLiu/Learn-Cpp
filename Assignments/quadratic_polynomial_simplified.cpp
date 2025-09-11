@@ -13,16 +13,21 @@ int highest_degree(double a, double b, double c)
   return 0;
 }
 
+void print_coefficient(double coef)
+{
+  if (coef == -1.0)
+    std::cout << "-";
+  else if (coef != 1.0 && coef!= 0.0)
+    std::cout << coef;
+}
+
 /**
 * Prints the polynomial in expanded form 
 */
 void print_expanded_form(double a, double b, double c)
 {
-  // Print a
-  if (a == -1.0)
-    std::cout<<"-";
-  else if (a != 1.0 && a!= 0.0)
-    std::cout << a;
+  // Print a 
+  print_coefficient(a);
 
   // Print x^2
   if (a != 0.0)
@@ -75,10 +80,8 @@ void print_factored_form(double a, double b, double c)
   }
 
   // Output coefficient a first since we always want it 
-  if (a == -1.0)
-    std::cout << "-";
-  else if (a!=1.0)
-    std::cout << a;
+  print_coefficient(a);
+
 
   // Special case where there is only one root
   if (delta == 0.0)
@@ -120,7 +123,31 @@ void print_factored_form(double a, double b, double c)
   std::cout << "(x";
   std::cout << (root2 > 0 ? " - " : " + ");
   std::cout << std::abs(root2) << ")" << std::endl;
+}
 
+void print_vortex_form(double a, double b, double c)
+{
+  double h { -b / (2*a) };
+  double k { a*h*h + b*h + c };
+
+  // First, print coefficient 
+  print_coefficient(a);
+
+  // Special case where h = 0 
+  if (h == 0)
+  {
+    std::cout << "x^2";
+  } else 
+  {
+    std::cout << "(x^2";
+    std::cout << (h > 0 ? " - " : " + ") << std::abs(h);
+    std::cout << ")";
+  }
+
+  if (k != 0)
+    std::cout << (k > 0 ? " + " : " - ") << std::abs(k);
+
+  std::cout << std::endl;
 }
 
 int main()
@@ -134,8 +161,17 @@ int main()
   std::cout << "Enter coefficient 'c': ";
   std::cin >> c;
 
+  int deg{ highest_degree(a, b, c) };
+
+  std::cout << "Degree: " << deg << std::endl;
+
   std::cout << "Expanded Form: ";
   print_expanded_form(a, b, c);
-  std::cout << "Factored Form: ";
-  print_factored_form(a, b, c);
+  if (deg == 2)
+  {
+    std::cout << "Factored Form: ";
+    print_factored_form(a, b, c);
+    std::cout << "Vortex Form: ";
+    print_vortex_form(a, b, c);
+  }
 }
