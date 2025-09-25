@@ -46,7 +46,7 @@ double scoreOutOf100(int maxScore, double rawScore)
 * until a valid maximum Score is entered.
 * 
 */
-int userInputMaxScore(std::string componentName)
+double userInputMaxScore(std::string componentName)
 {
   double userInput{};
   while (true)
@@ -69,7 +69,7 @@ int userInputMaxScore(std::string componentName)
 * @param componentName the name of the component, like "the Final Exam"
 * @param maxScore the maximum score of this component 
 */
-double userInputRawScore(std::string componentName, int maxScore)
+double userInputRawScore(std::string componentName, double maxScore)
 {
   double userInput{};
   while (true)
@@ -87,31 +87,31 @@ double userInputRawScore(std::string componentName, int maxScore)
 
 int main()
 {
-  int finalExamMaxScore{userInputMaxScore("the Final Examination")};
+  double finalExamMaxScore{userInputMaxScore("the Final Examination")};
   double finalExamRawScore{userInputRawScore("the Final Examination", finalExamMaxScore)};
-  int midtermExamMaxScore{userInputMaxScore("the Midterm Examiniation")};
+  double midtermExamMaxScore{userInputMaxScore("the Midterm Examiniation")};
   double midtermExamRawScore{userInputRawScore("the Midterm Examination", midtermExamMaxScore)};
 
   double finalScoreOutOf100 {scoreOutOf100(finalExamMaxScore, finalExamRawScore)};
   double midtermScoreOutOf100 {scoreOutOf100(midtermExamMaxScore, midtermExamRawScore)};
 
-  int project1MaxScore {userInputMaxScore("project 1")};
+  double project1MaxScore {userInputMaxScore("project 1")};
   double project1RawScore {userInputRawScore("project 1", project1MaxScore)};
   double project1Score {scoreOutOf100(project1MaxScore, project1RawScore)};
   
-  int project2MaxScore {userInputMaxScore("project 2")};
+  double project2MaxScore {userInputMaxScore("project 2")};
   double project2RawScore {userInputRawScore("project 2", project2MaxScore)};
   double project2Score {scoreOutOf100(project2MaxScore, project2RawScore)};
   
-  int project3MaxScore {userInputMaxScore("project 3")};
+  double project3MaxScore {userInputMaxScore("project 3")};
   double project3RawScore {userInputRawScore("project 3", project3MaxScore)};
   double project3Score {scoreOutOf100(project3MaxScore, project3RawScore)};
   
-  int project4MaxScore {userInputMaxScore("project 4")};
+  double project4MaxScore {userInputMaxScore("project 4")};
   double project4RawScore {userInputRawScore("project 4", project4MaxScore)};
   double project4Score {scoreOutOf100(project4MaxScore, project4RawScore)};
 
-  int project5MaxScore {userInputMaxScore("project 5")};
+  double project5MaxScore {userInputMaxScore("project 5")};
   double project5RawScore {userInputRawScore("project 5", project5MaxScore)};
   double project5Score {scoreOutOf100(project5MaxScore, project5RawScore)};
   
