@@ -9,79 +9,67 @@ Convert the online tutorial into clean, well-structured Obsidian markdown format
 
 ## 2. Obsidian Formatting Requirements
 
-### 2.1 Outline
+### 2.1 Outline & Callout Usage
 
-The document should have an h1 title, and should be divided into a few sections, each beginning with a callout that has a number and a sub-title.
+The document should have an h1 title, and should be divided into a few sections, each beginning with a callout that has a number and an h2 sub-title. Below each section, there should be some content. If appropriate, use some h4 to organzie.
 
 ```markdown
 # 7. References and Pointers
 
-> [!abstract] 7.1
-> # Value Catagories
+> [!quote] 1.1
+> 
+> ## Pointers
 
+...
 
+#### Null pointers
+...
+#### Pointer Types
+...
 ```
-
-### 2.2 Callouts
 
 There are various types of callouts in Obsidian; utilize this feature to help readers navigate through the article.
 
 **Callout Types:**
 - `[!abstract]` - Introduction
 - `[!quote]` - Concept
-- `[!fact]` - Fact
-- `[!info]` - Important
+- `[!fact]` - Important Information
+- `[!info]` - Additional Information
 - `[!warning]` Warning
 - `[!hint]` - Best Practice
 - `[!example]` - Examples
 
 ```markdown
-> [!abstract] Introduction
+> [!abstract] 1.1
 > #### Subtitle
 > Introductory parts in the note, such as the content describing the importance of a chapter or its real-life applications. (optional)
 
-> [!quote] Concept
+> [!quote] 1.2
 > #### Appropriate Subtitle
 > Introduce new terminology or key concepts.
 
-> [!fact] Fact
+> [!fact] 1.3
 > #### Appropriate Subtitle
-> State an important fact.
+> Writes about important information that is required to know.
 
-> [!info] Important
+> [!info] 1.4
 > #### Appropriate Subtitle
-> An important fact or a useful computational trick is something that’s worth knowing.
+> Writes about related information that is good know but not required.
 
-> [!hint] Best Practice
+> [!hint] 1.5
 > #### Appropriate Subtitle
 > Post a best practice or regulate the code style. 
 
-> [!example] Example
+> [!example] 1.6
 > #### Appropriate Subtitle
 > Provide an example.
 ```
 
-### 2.3 Examples with Collapsible Solutions
-
-For examples that need solutions, solutions are hidden by default:
-
-```markdown
-> [!example] Example
-> ## Finding Rank
-
-Find the rank of the given matrix.
-
-> [!success]- Solution (Click to expand)
-> Step 1: Convert to REF
-> Step 2: Count leading entries
-> Answer: $\text{rank}(A) = 2$
-```
-
-### 2.4 Multi-Column Layouts
+### 2.3 Multi-Column Layouts
 
 **AVOID** multi-column layouts in Obsidian. Use sequential structure with clear headings instead.
 
-### 2.5 Graphs and Figures
+### 2.4 Graphs and Figures
 
 For hand-drawn graphs:
 
@@ -89,7 +77,7 @@ For hand-drawn graphs:
 [Insert graph: description of what should be shown]
 ```
 
-### 2.6 Important Terminology
+### 2.5 Important Terminology
 
 Use purple colour and underline for terminologies that are within a line, example:
 
@@ -115,7 +103,7 @@ The system has **at least one** solution:
 
 You will be given the content of a few (6-12) pages as plain text at a time, convert them into one document. This means that you need to shrink the content to about 1/4 the original size. Discard introduction part, unusual examples, outdated language features and only keep the best practices.
 
-You will also be given a rough outline of the desired output note, so follow that structure.
+If you are given a desired outline, just follow that structure. Otherwise, provide a few structures with different structuring logic to choose from, and ask for the user to select one. 
 
 ### 3.1 What to Fix
 
@@ -3606,8 +3594,266 @@ Move Comment
   
 Move
 ```
-Output: (Concise, well-organized note optimal for reviewing)
+
+Output1: (Give a few possible ways to structure the note, ask user to choose)
+
+User Input: (Chooses which structure and give suggestion to improve)
+
+Final Output (Concise, well-organized note optimal for reviewing):
 
 ```
+
+> [!quote] 7.1
+> 
+> ## LValues and RValues
+
+An <u><strong style="color:#dab1da">lvalue</strong></u> evaluates to an identifiable object that persists beyond the expression.
+
+An <u><strong style="color:#dab1da">rvalue</strong></u> evaluates to a temporary value without persistent identity.
+
+```cpp
+int x = 5;    // x is lvalue
+x = 10;       // Valid: lvalue on left
+5 = x;        // Error: rvalue cannot be on left
+```
+
+**Lvalues implicitly convert to rvalues when needed by evaluating to their value.**
+
+> [!quote] 7.2
+> 
+> ## References
+
+An <u><strong style="color:#dab1da">lvalue reference</strong></u> is an alias for an existing object, declared using `&`.
+
+```cpp
+int x { 5 };
+int& ref { x };   // ref is now an alias for x
+ref = 10;         // Changes x to 10
+```
+
+An <u><strong style="color:#dab1da">lvalue reference to const</strong></u> treats the referenced object as a **read-only** variable:
+
+```cpp
+int x { 5 };
+const int& cref { x };  // Constant reference can point to non-constant variables
+std::cout << cref << std::endl; // Can read value, but not write
+```
+
+**References:**
+- Must be initialized
+- Cannot be reseated
+- No null references
+- Cleaner syntax
+- Safer
+
+> [!quote] 7.3
+> 
+> ## Pointers
+
+A <u><strong style="color:#dab1da">pointer</strong></u> is an object that holds a memory address.
+
+```cpp
+int x { 5 };
+int* ptr { &x };      // & gets address
+std::cout << ptr;     // the value of ptr (or address of x)
+std::cout << *ptr;    // dereferences ptr (prints the value of x)
+(*ptr) ++;            // Change the value of x
+ptr++;                // Change the address (dangerous)
+```
+
+**Pointers:**
+- Can be uninitialized (dangerous)
+- Can be reassigned
+- Can be null
+- Explicit dereferencing needed
+- More flexible
+#### Null Pointers
+```cpp
+int* ptr {};          // Preferred: value initialization
+int* ptr { nullptr }; // Explicit null
+// Never dereference null pointers!
+```
+#### Pointer Types
+```cpp
+const int* ptr1;      // Pointer to constant
+int* const ptr2;      // Const pointer (can't change address)  
+const int* const ptr3; // Both const
+```
+
+
+> [!hint] 7.4
+> 
+> ## Passing Parameters
+
+#### 1. By Value (Preferred)
+
+```cpp
+int func(int x)
+{
+	return 2 * x + 1;
+}
+```
+**When to use**: When we only need to **read** the value of a **fundamental datatype**.
+#### 2. By Constant Reference
+
+```cpp
+int countWords(const std::string& str)
+{
+	int result { 0 };
+	for (char c:str) {
+		if (c==' ') result++;
+	}
+	return result;
+}
+```
+**When to use**: When we only need to **read** the value of a **class type**.
+This is useful because we can save memory usage of copying the object
+#### 3. By std::string_view (Preferred)
+
+In modern c++ practices, it is preferred to use `std::string_view` over `const std::string&` for string parameters.
+```cpp
+int countWords(const std::string_view strv)
+{
+	int result { 0 };
+	for (char c:strv) {
+		if (c==' ') result++;
+	}
+	return result;
+}
+```
+
+#### 4. By Reference (Preferred)
+
+```cpp
+void modify(int& x1, int& x2, int& x3);
+```
+**When to use**: When we only need to **modify** the value of parameters. 
+This is useful because we can't return multiple values.
+#### 5. ~~By Pointer~~ (Not Preferred)
+
+```cpp
+void modify(int* ptr) {
+    if (ptr) {           // Always null-check!
+        *ptr = 10;
+    }
+}
+int x { 5 };
+modify(&x);              // x becomes 10
+modify(nullptr);         // Safe: null check prevents crash
+```
+**When to use**: Only for **optional parameters** where nullptr is a valid input.
+
+
+> [!hint] 7.5
+> 
+> ## Returning Values
+> 
+#### 1. Return Directly by Object (Preferred)
+```cpp
+int func();
+```
+
+#### 2. Return by Reference (Occasionally)
+
+```cpp
+// SAFE: Static variable
+const std::string& getName() {
+    static std::string s_name { "Name" };
+    return s_name;
+}
+
+// DANGEROUS: Local variable
+const int& bad() {
+    int local { 5 };
+    return local;  // Dangling reference!
+}
+```
+#### 3. Return by Address (Occasionally)
+
+```cpp
+int* find(int arr[], int size, int target) {
+    for (int i = 0; i < size; ++i) {
+        if (arr[i] == target) 
+            return &arr[i];
+    }
+    return nullptr;  // "Not found"
+}
+```
+#### 4. Type-Safe Optional (Preferred)
+Replace nullable pointers with type-safe optional:
+
+```cpp
+#include<optional>
+#include<iostream>
+
+std::optional<int> divide(int a, int b) {
+	if (b == 0) return std::nullopt;
+	return a / b;
+}
+
+int main()
+{
+	std::optinal<int> res = divide(100, 10);
+	if (res.has_value()) std::cout << res.value();
+}
+```
+
+> [!success]- Advantages
+- No dynamic allocation
+- Clear "no value" semantics
+- Stack-based efficiency
+- Works with value types
+- No null pointer risks
+
+
+
+> [!hint] 7.6
+> 
+> ## In & Out Parameters Best Practices
+
+ - Use return values for single outputs
+ - Use out parameters for multiple outputs
+ - Consider `std::tuple` or struct for multiple returns
+ - Document parameter intent clearly
+
+```cpp
+// Input parameters (by const ref for class types)
+void process(const std::vector<int>& input);
+
+// Output parameters (by reference)
+bool getData(int& result) {
+    if (/* success */) {
+        result = 42;
+        return true;
+    }
+    return false;
+}
+
+// In-out parameters (by reference)
+void transform(std::string& data) {
+    // Modify data in place
+}
+```
+
+
+> [!fact] 7.7
+> 
+> ## Type Deduction with auto
+
+```cpp
+int x { 5 };
+int& ref { x };
+const int& cref { x };
+
+auto a = x;      // int (copies value)
+auto b = ref;    // int (drops reference)
+auto c = cref;   // int (drops const and reference)
+
+auto& d = x;     // int& (keeps reference)
+const auto& e = x; // const int& (adds const)
+auto* f = &x;    // int* (pointer)
+```
+
+**Key**: `auto` drops references and cv-qualifiers unless explicitly specified
 
 ```

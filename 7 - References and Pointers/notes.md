@@ -3,7 +3,7 @@
 
 ---
 
-> [!quote] Concept
+> [!quote] 7.1
 > 
 > ## LValues and RValues
 
@@ -19,7 +19,7 @@ x = 10;       // Valid: lvalue on left
 
 **Lvalues implicitly convert to rvalues when needed by evaluating to their value.**
 
-> [!quote] Concept
+> [!quote] 7.2
 > 
 > ## References
 
@@ -46,7 +46,7 @@ std::cout << cref << std::endl; // Can read value, but not write
 - Cleaner syntax
 - Safer
 
-> [!quote] Concept
+> [!quote] 7.3
 > 
 > ## Pointers
 
@@ -67,13 +67,13 @@ ptr++;                // Change the address (dangerous)
 - Can be null
 - Explicit dereferencing needed
 - More flexible
-### Null Pointers
+#### Null Pointers
 ```cpp
 int* ptr {};          // Preferred: value initialization
 int* ptr { nullptr }; // Explicit null
 // Never dereference null pointers!
 ```
-### Pointer Types
+#### Pointer Types
 ```cpp
 const int* ptr1;      // Pointer to constant
 int* const ptr2;      // Const pointer (can't change address)  
@@ -81,11 +81,11 @@ const int* const ptr3; // Both const
 ```
 
 
-> [!hint] Best Practices
+> [!hint] 7.4
 > 
 > ## Passing Parameters
 
-### By Value
+#### 1. By Value (Preferred)
 
 ```cpp
 int func(int x)
@@ -94,29 +94,42 @@ int func(int x)
 }
 ```
 **When to use**: When we only need to **read** the value of a **fundamental datatype**.
-
-### By Constant Reference
+#### 2. By Constant Reference
 
 ```cpp
 int countWords(const std::string& str)
 {
 	int result { 0 };
-	for (char c:s) {
+	for (char c:str) {
 		if (c==' ') result++;
 	}
 	return result;
 }
 ```
 **When to use**: When we only need to **read** the value of a **class type**.
-This is useful because we want to save the memory needed to copy the object
-### By Reference
+This is useful because we can save memory usage of copying the object
+#### 3. By std::string_view (Preferred)
+
+In modern c++ practices, it is preferred to use `std::string_view` over `const std::string&` for string parameters.
+```cpp
+int countWords(const std::string_view strv)
+{
+	int result { 0 };
+	for (char c:strv) {
+		if (c==' ') result++;
+	}
+	return result;
+}
+```
+
+#### 4. By Reference (Preferred)
 
 ```cpp
 void modify(int& x1, int& x2, int& x3);
 ```
 **When to use**: When we only need to **modify** the value of parameters. 
 This is useful because we can't return multiple values.
-### By Pointer
+#### 5. ~~By Pointer~~ (Not Preferred)
 
 ```cpp
 void modify(int* ptr) {
@@ -124,40 +137,23 @@ void modify(int* ptr) {
         *ptr = 10;
     }
 }
-
 int x { 5 };
 modify(&x);              // x becomes 10
 modify(nullptr);         // Safe: null check prevents crash
 ```
-
 **When to use**: Only for **optional parameters** where nullptr is a valid input.
-Not recommended.
-
-### Modern Preference: std::string_view
-
-In modern c++ practices, it is preferred to use `std::string_view` over `const std::string&` for string parameters.
 
 
-> [!hint] Best Practices
+> [!hint] 7.5
 > 
 > ## Returning Values
-
-### Return by Address
-
+> 
+#### 1. Return Directly by Object (Preferred)
 ```cpp
-int* find(int arr[], int size, int target) {
-    for (int i = 0; i < size; ++i) {
-        if (arr[i] == target) 
-            return &arr[i];
-    }
-    return nullptr;  // "Not found"
-}
+int func();
 ```
 
-**Choose reference** unless you need to return nullptr
-
-
-### Return by Reference
+#### 2. Return by Reference (Occasionally)
 
 ```cpp
 // SAFE: Static variable
@@ -172,10 +168,53 @@ const int& bad() {
     return local;  // Dangling reference!
 }
 ```
+#### 3. Return by Address (Occasionally)
 
-> [!example] Example
+```cpp
+int* find(int arr[], int size, int target) {
+    for (int i = 0; i < size; ++i) {
+        if (arr[i] == target) 
+            return &arr[i];
+    }
+    return nullptr;  // "Not found"
+}
+```
+#### 4. Type-Safe Optional (Preferred)
+Replace nullable pointers with type-safe optional:
+
+```cpp
+#include<optional>
+#include<iostream>
+
+std::optional<int> divide(int a, int b) {
+	if (b == 0) return std::nullopt;
+	return a / b;
+}
+
+int main()
+{
+	std::optinal<int> res = divide(100, 10);
+	if (res.has_value()) std::cout << res.value();
+}
+```
+
+> [!success]- Advantages
+- No dynamic allocation
+- Clear "no value" semantics
+- Stack-based efficiency
+- Works with value types
+- No null pointer risks
+
+
+
+> [!hint] 7.6
 > 
-> ## In & Out Parameters
+> ## In & Out Parameters Best Practices
+
+ - Use return values for single outputs
+ - Use out parameters for multiple outputs
+ - Consider `std::tuple` or struct for multiple returns
+ - Document parameter intent clearly
 
 ```cpp
 // Input parameters (by const ref for class types)
@@ -196,13 +235,8 @@ void transform(std::string& data) {
 }
 ```
 
-Best Practice 
- - Use return values for single outputs
- - Use out parameters for multiple outputs
- - Consider `std::tuple` or struct for multiple returns
- - Document parameter intent clearly
 
-> [!hint] Best Practice
+> [!fact] 7.7
 > 
 > ## Type Deduction with auto
 
@@ -221,41 +255,3 @@ auto* f = &x;    // int* (pointer)
 ```
 
 **Key**: `auto` drops references and cv-qualifiers unless explicitly specified
-
-
-Replace nullable pointers with type-safe optional:
-
-```cpp
-#include <optional>
-
-std::optional<int> divide(int a, int b) {
-    if (b == 0) 
-        return std::nullopt;  // or {}
-    return a / b;
-}
-
-// Usage
-if (auto result = divide(10, 2)) {
-    std::cout << *result;     // or result.value()
-}
-```
-
-> [!success]- Advantages (Click to expand)
-> 
-> - No dynamic allocation
-> - Clear "no value" semantics
-> - Stack-based efficiency
-> - Works with value types
-> - No null pointer risks
-
-> [!hint] Best Practice
-> 
-> ## Safety Checklist
-
-1. **Initialize all pointers** - No wild pointers
-2. **Use nullptr, not NULL or 0** - Type safety
-3. **Null-check before dereferencing** - Prevent crashes
-4. **Prefer references over pointers** - Safer syntax
-5. **Never return local addresses** - Avoid dangling
-6. **Use smart pointers for dynamic memory** - RAII
-7. **Consider std::optional** - Modern null alternative
