@@ -17,6 +17,17 @@ int main()
         int d{}; // define variable (modern)
         std::cout << d << std::endl; //output: 0
 
+        unsigned int ui{ 5 };
+        std::cout << ui + 1 << std::endl;
+        std::cout << ui - 6 << std::endl; // 4294967295
+
+        // Part2: Basic IOStream
+        std::cout << "Please Enter a Number: ";
+        std::cin >> d; // standard input
+        // Entering 123a will become 123
+        // Entering a123 will become 0 (extraction fails)
+        // Entering 5.6 will become 5 (integer part)
+
 
         // Part2: Float, Double & Long
         float x = 1.0f;
@@ -31,13 +42,6 @@ int main()
         std::cout << n << std::endl;
         std::cout << m << std::endl;
         std::cout << p << std::endl;
-
-        // Part3: Basic IOStream
-        std::cout << "Please Enter a Number: ";
-        std::cin >> d; // standard input
-        // Entering 123a will become 123
-        // Entering a123 will become 0 (extraction fails)
-        // Entering 5.6 will become 5 (integer part)
 
         // Part4: Char, String and Constants
         char ch{ 'a' };

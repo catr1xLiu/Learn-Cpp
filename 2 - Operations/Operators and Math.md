@@ -1,8 +1,6 @@
-# 3. Operators and Math
 
-> [!quote] 3.1
-> 
-> ## Arithmetic Operators
+> [!quote] 2.1
+> # Arithmetic Operators
 
 #### Unary Operators
 
@@ -31,8 +29,14 @@ Force floating-point division:
 static_cast<double>(x) / y
 ```
 
-> [!warning] Division by zero causes undefined behavior (crash)
+> [!warning] Warning
+> #### Division by Zero
 
+**Division by zero causes undefined behavior (crash)**
+
+```cpp
+int x {1/0};
+```
 #### Arithmetic Assignment
 
 ```cpp
@@ -43,12 +47,10 @@ x /= 5;   // x = x / 5
 x %= 3;   // x = x % 3
 ```
 
+> [!quote] 2.2
+> # Remainder and Exponentiation
+
 ---
-
-> [!quote] 3.2
-> 
-> ## Remainder and Exponentiation
-
 #### Remainder (%)
 
 Result takes sign of first operand:
@@ -59,11 +61,10 @@ Result takes sign of first operand:
 6 % -4   // = 2
 ```
 
-> [!hint] Compare remainder against 0 to handle negative numbers:
-> 
-> ```cpp
-> bool isOdd(int x) { return (x % 2) != 0; }
-> ```
+Compare remainder against 0 to handle negative numbers:
+```cpp
+bool isOdd(int x) { return (x % 2) != 0; }
+```
 
 #### Exponentiation
 
@@ -72,12 +73,10 @@ Result takes sign of first operand:
 std::pow(3.0, 4.0);  // 3^4 = 81 (floating-point only)
 ```
 
+> [!fact] 2.3
+> # Increment/Decrement and Side Effects
+
 ---
-
-> [!quote] 3.3
-> 
-> ## Increment/Decrement and Side Effects
-
 ```cpp
 ++x   // Pre-increment: increment then return
 x++   // Post-increment: copy, increment, return copy
@@ -85,47 +84,49 @@ x++   // Post-increment: copy, increment, return copy
 x--   // Post-decrement
 ```
 
-> [!hint] Prefer prefix (++x) - more performant
-
 #### Side Effects
 
 Operators that modify their operands: `=, +=, -=, ++, --`
 
-> [!warning] Critical Rule **Never use a variable with side effects more than once per statement**
-> 
-> ```cpp
-> int y = x + ++x;  // UNDEFINED BEHAVIOR
-> ```
+> [!warning] Warning
+> #### Side Effects
+> **Never use a variable with side effects more than once per statement.**
+
+```cpp
+int y = x + ++x;  // UNDEFINED BEHAVIOR
+```
+
+
+> [!quote] 2.4
+> # Relational Operators
 
 ---
-
-> [!quote] 3.4
-> 
-> ## Relational Operators
-
 ```cpp
 x > y    x < y    x >= y    x <= y
 x == y   x != y
 ```
 
-> [!hint] Don't compare booleans unnecessarily:
-> 
-> ```cpp
-> if (b1) ...        // Not: if (b1 == true)
-> if (!b1) ...       // Not: if (b1 == false)
-> ```
+> [!hint] Best Practice
+> **Don't compare booleans unnecessarily:**
 
-#### Floating-Point Comparisons
+ ```cpp
+if (b1) ...        // Not: if (b1 == true)
+if (!b1) ...       // Not: if (b1 == false)
+```
 
-> [!warning] Never use == or != with calculated floating-point values
-> 
-> ```cpp
-> double d1 = 100.0 - 99.99;  // Rounding errors!
-> double d2 = 10.0 - 9.99;
-> d1 == d2  // May be false despite both "should" equal 0.01
-> ```
+#### Floating Point Comparison
 
-**Safe comparisons:**
+> [!failure] 
+> **Never use == or != with calculated floating-point values**
+
+```cpp
+double d1 = 100.0 - 99.99;  // Rounding errors!
+double d2 = 10.0 - 9.99;
+d1 == d2  // May be false despite both "should" equal 0.01
+```
+
+> [!hint] Best Practice
+> **Safe comparisons:**
 
 - Literal with variable initialized to same literal
 - Use approximate equality function for calculations:
@@ -139,12 +140,12 @@ bool approximatelyEqual(double a, double b,
 }
 ```
 
----
 
-> [!quote] 3.5
+> [!quote] 2.5
 > 
-> ## Logical Operators
+> # Logical Operators
 
+---
 ```cpp
 !x        // NOT
 x && y    // AND (true if both true)
@@ -159,19 +160,11 @@ x || y    // OR (true if either true)
 if (ptr && ptr->value)  // Safe: ptr checked first
 ```
 
-> [!warning] Avoid side effects in logical expressions:
-> 
-> ```cpp
-> if (x == 1 && ++y == 2)  // BAD: y may not increment
-> ```
-
-#### De Morgan's Laws
-
-Distribute NOT by flipping AND ↔ OR:
+> [!warning] Warning
+> **Avoid side effects in logical expressions:**
 
 ```cpp
-!(x && y)  =  !x || !y
-!(x || y)  =  !x && !y
+if (x == 1 && ++y == 2)  // BAD: y may not increment
 ```
 
 #### XOR
@@ -182,12 +175,11 @@ Use `!=` for bools:
 if (a != b) ...  // XOR
 ```
 
----
-
 > [!quote] 3.6
 > 
-> ## Operator Precedence and Associativity
+> # Operator Precedence and Associativity
 
+---
 <u><strong style="color:#dab1da">Precedence</strong></u> determines grouping (higher precedence groups first) <u><strong style="color:#dab1da">Associativity</strong></u> determines direction when operators have same precedence
 
 ```cpp
@@ -226,17 +218,19 @@ a || b || c  // = (a || b) || c
 ```
 
 > [!hint] Best Practices
-> 
-> - **Parenthesize** everything except `+, -, *, /`
-> - **Always parenthesize** mixed AND/OR expressions
-> 
-> ```cpp
-> (a && b) || (c && d)  // Clear intent
-> ```
+> **Using Parenthesize to organize expressions**
 
-> [!warning] Operand Evaluation Order C++ doesn't specify the order operands are evaluated - never depend on it:
-> 
-> ```cpp
-> foo(getValue(), getValue())  // Order undefined!
-> ```
+- **Parenthesize** everything except `+, -, *, /`
+- **Always parenthesize** mixed AND/OR expressions
+
+```cpp
+(a && b) || (c && d)  // Clear intent
+```
+
+> [!warning] Warning
+>  **C++ doesn't specify the order operands are evaluated**
+ 
+```cpp
+foo(getValue(), getValue())  // Order undefined!
+```
 
