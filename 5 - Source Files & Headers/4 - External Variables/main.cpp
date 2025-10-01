@@ -6,9 +6,9 @@ extern int globalCounter;
 
 int main()
 {
-    globalCounter++;
-    counterUp();
-    std::cout<< globalCounter << std::endl; // output: 2
+        globalCounter++;
+        counterUp();
+        std::cout << globalCounter << std::endl; // output: 2
 
-    return 0;
+        return 0;
 }

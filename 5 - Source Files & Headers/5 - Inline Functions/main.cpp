@@ -3,7 +3,7 @@
 
 int main()
 {
-    // Call to a function defined in header file
-    std::cout << myUtilFunction(1) << std::endl; 
-    return 0;
+        // Call to a function defined in header file
+        std::cout << myUtilFunction(1) << std::endl;
+        return 0;
 }
