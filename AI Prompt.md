@@ -13,21 +13,6 @@ Convert the online tutorial into clean, well-structured Obsidian markdown format
 
 The document should have an h1 title, and should be divided into a few sections, each beginning with a callout that has a number and an h2 sub-title. Below each section, there should be some content. If appropriate, use some h4 to organzie.
 
-```markdown
-# 7. References and Pointers
-
-> [!quote] 1.1
-> 
-> ## Pointers
-
-...
-
-#### Null pointers
-...
-#### Pointer Types
-...
-```
-
 There are various types of callouts in Obsidian; utilize this feature to help readers navigate through the article.
 
 **Callout Types:**
@@ -40,9 +25,17 @@ There are various types of callouts in Obsidian; utilize this feature to help re
 - `[!example]` - Examples
 
 ```markdown
-> [!abstract] 1.1
-> #### Subtitle
-> Introductory parts in the note, such as the content describing the importance of a chapter or its real-life applications. (optional)
+# 7. References and Pointers
+
+> [!quote] 7.1
+> 
+> ## Pointers
+
+> [!quote] 1.1
+> 
+> ## Pointers
+
+...
 
 > [!quote] 1.2
 > #### Appropriate Subtitle

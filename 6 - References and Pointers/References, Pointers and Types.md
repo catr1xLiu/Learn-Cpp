@@ -1,11 +1,10 @@
 
-# 7 - References, Pointers and Types
-
 ---
 
-> [!quote] 7.1
+> [!abstract] 7.1
 > 
-> ## LValues and RValues
+> # Value Categories 
+
 
 An <u><strong style="color:#dab1da">lvalue</strong></u> evaluates to an identifiable object that persists beyond the expression.
 
