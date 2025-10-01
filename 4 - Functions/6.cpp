@@ -1,11 +1,19 @@
 #include<iostream>
+#include<functional>
 // Part5: Anonymous Functions (Lambda Expressions)
 
 int main() {
         // 1. Basic Lambda
-        auto add = [](int a, int b) {
-                // a and b are parameters of the lambda
-                return a + b;
+        auto add = [](int a, int b)
+                {
+                        // a and b are parameters of the lambda
+                        return a + b;
+                };
+        // This is equivellant to:
+        std::function<int(int, int)> add2 = [](int a, int b)
+                {
+                        // a and b are parameters of the lambda
+                        return a + b;
                 };
         std::cout << add(5, 3) << std::endl; // output: 8
 
@@ -62,7 +70,7 @@ int main() {
                 {
                         // This lambda expression has:
                         //  1. READ access to external variable x
-                        //  2. READ/WRITE access to external variable x
+                        //  2. READ/WRITE access to external variable y
 
                         // x+= 10; // error, we CANNOT modify x
                         std::cout << x << std::endl; // output: 10

@@ -133,17 +133,5 @@ You will be given the content of a few documents, each of length 4-5 pages as pl
 
 If you are given a desired outline, just follow that structure. Otherwise, provide a few structures with different structuring logic to choose from, and ask for the user to select one. 
 
-### 3.1 What to Fix
-
-- Computational errors
-- Incomplete explanations
-- Disorganized structure
-- Unclear notation
-
-### 3.2 Organization Tips
-
-- Group related concepts
-- Break complex theorems into parts
-- Add "why" explanations between steps
-- Use consistent terminology
+Remember to condense the document's size, discard unnecessary information, and retain only the essential best practices that a programmer needs to know.
 
