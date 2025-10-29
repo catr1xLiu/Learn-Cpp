@@ -29,4 +29,9 @@ int main()
         for (const int& i : nums) {
                 std::cout << i << std::endl;
         }
+
+        int arr[4] = { 1, 2, 3, 4 };
+        for (int& i : arr) {
+
+        }
 }
