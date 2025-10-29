@@ -7,13 +7,13 @@
  * @param ratio the ratio between every previous term and the next term
  * @return a newly allocated double array with capacity cap1, caller takes owenership
  */
-double* geometric(double a, double ratio, size_t cap);
+double* geometric(double a, double ratio, std::size_t cap);
 
 /**
  * Finds the cross correlation between the two arrays.
  *
  */
-double* cross_correlation(double array0[], size_t cap0, double array1[], size_t cap1);
+double* cross_correlation(double array0[], std::size_t cap0, double array1[], std::size_t cap1);
 
 /**
  * Moves duplicate entries to the end of the array.
@@ -22,7 +22,7 @@ double* cross_correlation(double array0[], size_t cap0, double array1[], size_t 
  * @param cap the capacity of the array
  * @return the number of unique entries
  */
-size_t shift_duplicates(int array[], size_t cap);
+std::size_t shift_duplicates(int array[], std::size_t cap);
 
 /**
  * Sets all entries of a memory space to zero, then deallocates them.
@@ -31,15 +31,15 @@ size_t shift_duplicates(int array[], size_t cap);
  * @param cap the size of the array, if the given pointer is pointing to an array
  *
  */
-void deallocate(double*& ref_to_ptr, bool is_arr, size_t cap = 0);
+void deallocate(double*& ref_to_ptr, bool is_arr, std::size_t cap = 0);
 
 // Testing functions:
 bool compare_double(double x1, double x2);
 
-bool check_geometric(double array[], size_t capacity, double a, double ratio);
+bool check_geometric(double array[], std::size_t capacity, double a, double ratio);
 
 template<class T>
-void print_array(T array[], size_t cap);
+void print_array(T array[], std::size_t cap);
 
 int main()
 {
@@ -87,7 +87,7 @@ int main()
                 double empty_arr[]{};
                 double* cross_corr3 = cross_correlation(geometric_arr, 100, empty_arr, 0);
                 // Check if all terms are zero
-                for (size_t i = 0; i < 100 - 1; i++) {
+                for (std::size_t i = 0; i < 100 - 1; i++) {
                         assert(cross_corr3[i] == 0);
                 }
                 std::cout << "All entries are checked to be zero.\n\n";
@@ -108,13 +108,13 @@ int main()
                 int numbers[6]{ 2, 3, 5, 8, 13, 21 };
                 int repeats[6]{ 30, 40, 50, 30, 20, 20 };
                 int data_cap{ 0 };
-                for (size_t i = 0; i < 6; i++) {
+                for (std::size_t i = 0; i < 6; i++) {
                         data_cap += repeats[i];
                 }
                 int* complex_data = new int[data_cap];
-                size_t index{ 0 };
-                for (size_t i = 0; i < 6; i++) {
-                        for (size_t j = 0; j < repeats[i]; j++) {
+                std::size_t index{ 0 };
+                for (std::size_t i = 0; i < 6; i++) {
+                        for (std::size_t j = 0; j < repeats[i]; j++) {
                                 complex_data[index++] = numbers[i];
                         }
                 }
@@ -126,20 +126,20 @@ int main()
                 // First, check if the unique entries are at the front
                 std::cout << "First 6 entries of the array: ";
                 print_array(complex_data, 6);
-                for (size_t i = 0; i < 6; i++) {
+                for (std::size_t i = 0; i < 6; i++) {
                         assert(complex_data[i] == numbers[i]);
                 }
                 std::cout << "Unique entries are confirmed to be at the front (Success)\n";
 
                 // Then, check if all entries are still included in the back
                 int numbers_actual_count[6]{ 0 };
-                for (size_t i = 0; i < data_cap; i++) for (size_t j = 0; j < 6; j++) {
+                for (std::size_t i = 0; i < data_cap; i++) for (std::size_t j = 0; j < 6; j++) {
                         if (numbers[j] == complex_data[i]) numbers_actual_count[j]++;
                 }
                 std::cout << "Actual Number Counts: ";
                 print_array(numbers_actual_count, 6);
                 // Check if the number counts are preserved
-                for (size_t i = 0; i < 6; i++) {
+                for (std::size_t i = 0; i < 6; i++) {
                         assert(repeats[i] == numbers_actual_count[i]);
                 }
                 std::cout << "The number counts are preserved (Success)\n";
@@ -158,9 +158,9 @@ int main()
                 // std::cout << "value after deallocation: " << *double_ptr << " \n"; // This should give us segmentation fault
                 std::cout << "value in memory after deallocation: " << *another_ptr << "\n"; // Undefined behavior
 
-                // Case2: deallocation of memory
+                // Case2: deallocation of arrays
                 // We will periodically declare new arrays of 8MB in the heap for 10 * 1024 times.
-                // Without the deallocation function, this will ofcourse cause memory overflow (80GB memory used).
+                // Without the deallocation function, this should cause memory overflow (80GB memory used).
                 // But with the deallocation function, the code should be able to run correctly.
 
                 std::cout << "Testing memory deallocation, this might take a while...\n";
@@ -185,23 +185,25 @@ int main()
 }
 
 
-double* geometric(double a, double ratio, size_t cap)
+double* geometric(double a, double ratio, std::size_t cap)
 {
+        if (cap == 0) return new double[0];
+
         double* arr = new double[cap] { a };
-        for (size_t i = 1; i < cap; i++) {
+        for (std::size_t i = 1; i < cap; i++) {
                 arr[i] = ratio * arr[i - 1];
         }
 
         return arr;
 }
 
-double* cross_correlation(double array0[], size_t cap0, double array1[], size_t cap1)
+double* cross_correlation(double array0[], std::size_t cap0, double array1[], std::size_t cap1)
 {
         assert(cap0 + cap1 >= 1);
         double* results = new double[cap0 + cap1 - 1] {};
 
-        for (size_t i = 0; i < cap0; i++) {
-                for (size_t j = 0; j < cap1; j++) {
+        for (std::size_t i = 0; i < cap0; i++) {
+                for (std::size_t j = 0; j < cap1; j++) {
                         results[i + j] += array0[i] * array1[j];
                 }
         }
@@ -209,17 +211,19 @@ double* cross_correlation(double array0[], size_t cap0, double array1[], size_t 
         return results;
 }
 
-size_t shift_duplicates(int array[], size_t cap)
+std::size_t shift_duplicates(int array[], std::size_t cap)
 {
-        int* unique_entries = new int[cap] { 0 };
-        size_t unique_index{ 0 };
+        if (cap == 0) return 0;
 
-        int* duplicated_entries = new int[cap] { 0 };
-        size_t duplicated_index{ 0 };
+        int* unique_entries = new int[cap] {};
+        std::size_t unique_index{ 0 };
 
-        for (size_t i = 0; i < cap; i++) {
+        int* duplicated_entries = new int[cap] {};
+        std::size_t duplicated_index{ 0 };
+
+        for (std::size_t i = 0; i < cap; i++) {
                 bool duplicated = false;
-                for (size_t j = 0; j < unique_index; j++) {
+                for (std::size_t j = 0; j < unique_index; j++) {
                         if (duplicated = unique_entries[j] == array[i]) break;
                 }
                 if (duplicated) {
@@ -230,7 +234,7 @@ size_t shift_duplicates(int array[], size_t cap)
                 }
         }
 
-        for (size_t i = 0; i < cap; i++) {
+        for (std::size_t i = 0; i < cap; i++) {
                 array[i] = i < unique_index
                         ? unique_entries[i]
                         : duplicated_entries[i - unique_index];
@@ -238,31 +242,30 @@ size_t shift_duplicates(int array[], size_t cap)
 
         delete[] unique_entries;
         delete[] duplicated_entries;
-
         return unique_index;
 }
 
-void deallocate(double*& ref_to_ptr, bool is_arr, size_t cap)
+void deallocate(double*& ref_to_ptr, bool is_arr, std::size_t cap)
 {
-        if (!is_arr || cap == 0) {
+        if (!is_arr) {
                 *ref_to_ptr = 0.0;
                 delete ref_to_ptr;
                 ref_to_ptr = nullptr;
                 return;
         }
 
-        for (size_t i = 0; i < cap; i++) {
+        for (std::size_t i = 0; i < cap; i++) {
                 ref_to_ptr[i] = 0.0;
         }
         delete[] ref_to_ptr;
         ref_to_ptr = nullptr;
 }
 
-bool check_geometric(double array[], size_t capacity, double a, double ratio)
+bool check_geometric(double array[], std::size_t capacity, double a, double ratio)
 {
         if (capacity == 0) return false;
         if (array[0] != a) return false;
-        for (size_t i = 1; i < capacity; i++) {
+        for (std::size_t i = 1; i < capacity; i++) {
                 double actual_ratio = array[i] / array[i - 1];
                 if (!compare_double(actual_ratio, ratio)) return false;
         }
@@ -278,9 +281,9 @@ bool compare_double(double x1, double x2)
 }
 
 template<class T>
-void print_array(T array[], size_t cap)
+void print_array(T array[], std::size_t cap)
 {
-        for (size_t i = 0; i < cap; i++) {
+        for (std::size_t i = 0; i < cap; i++) {
                 std::cout << array[i] << ", ";
         }
         std::cout << "\n";
