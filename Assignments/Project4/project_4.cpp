@@ -2,12 +2,7 @@
 
 std::size_t length(const char *a)
 {
-        for (std::size_t i = 0; i <= 21; i++) {
-                if (a[i] == '\0')
-                        return i;
-        }
-
-        return 0;
+        return *a == '\0' ? 0 : length(a + 1) + 1;
 }
 
 int compare(const char *str1, const char *str2)
