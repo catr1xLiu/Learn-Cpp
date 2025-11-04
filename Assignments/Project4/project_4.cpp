@@ -52,9 +52,70 @@ void assign(char *str1, const char *str2)
         }
 }
 
+/**
+ * @brief Finds the distance between str1 and str2
+ * @param str1 the first string, teminated by '\0'
+ * @param str2 the second strin, terminated by '\0'
+ * @return the minimum amount of EDITS (insertion, deletion or modification)
+ * needed to turn str1 to str2
+ * */
 unsigned int distance(const char *str1, const char *str2)
 {
-        return 0; // TODO: implement
+        // Find the length of the two strings
+        const std::size_t len1{ length(str1) }, len2{ length(str2) };
+
+        // dis[i][j] is the distance between the substrings str1+i and str2+j
+        // Note for i = len1 or j = len2, we think of that is the distance
+        // between "" and a substring of str2 or str1
+        int dis[len1 + 1][len2 + 1];
+
+        // First, the distance between an empty string and
+        // a string with lenght n is n (all insertions)
+        for (int i = 0; i <= len1; i++) {
+                dis[i][len2] = len1 - i;
+        }
+        for (int j = 0; j <= len2; j++) {
+                dis[len1][j] = len2 - j;
+        }
+
+        for (std::size_t i = len1; (i--) > 0;) {
+                for (std::size_t j = len2; (j--) > 0;) {
+                        // If str1[i] = str2[j], no modification needed
+                        // So, by simply doing nothing,
+                        // we can achives a distance dis[i+1][j+1]
+                        if (str1[i] == str2[j]) {
+                                dis[i][j] = dis[i + 1][j + 1];
+                                continue;
+                        }
+
+                        // Otherwise, we can perform the following EDITs:
+
+                        // EDIT1: we modify str1[i] to str2[j]
+                        // This achives a distance dis[i+1][j+1],
+                        // as we can skip str1[i] and str2[j]
+                        // 1 is added to the result (one EDIT performed)
+                        const int dis_modified{ dis[i + 1][j + 1] + 1 };
+
+                        // EDIT2: we insert str2[j] after str1[i]
+                        // This achives a distance dis[i][j+1],
+                        // as we can skip str2[j]
+                        // Similarly, 1 is added to the result
+                        const int dis_inserted{ dis[i][j + 1] + 1 };
+
+                        // EDIT3: we delete str1[i]
+                        // This achives a distance dis[i+1][j],
+                        // as we can removed str1[j]
+                        // Similarly, 1 is added to the result
+                        const int dis_deleted{ dis[i + 1][j] + 1 };
+
+                        // We take the MINIMUM of the
+                        // distance after every possible operation
+                        dis[i][j] = std::min(
+                            std::min(dis_modified, dis_inserted), dis_deleted);
+                }
+        }
+
+        return dis[0][0];
 }
 
 std::size_t is_sorted(char **array, std::size_t capacity)
