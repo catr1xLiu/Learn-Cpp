@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "bcded03214ab0ccd",
+        "id": "0bf7235a26ca3fae",
         "type": "tabs",
         "children": [
           {
-            "id": "e435b56710d773f2",
+            "id": "d900dc7465bba01b",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "6 - References and Pointers/References, Pointers and Types.md",
+                "file": "6 - References and Pointers/6.5 - Notes.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "References, Pointers and Types"
+              "title": "6.5 - Notes"
             }
           }
         ]
@@ -166,15 +166,43 @@
       "bases:Create new base": false
     }
   },
-  "active": "e435b56710d773f2",
+  "active": "d900dc7465bba01b",
   "lastOpenFiles": [
-    "Mind Map.canvas",
-    "AI Prompt.md",
-    "Mind Map.md",
-    "1 - Cpp Fundamentals/notes.md",
-    "7 - References and Pointers/References, Pointers and Types.md",
-    "2 - Variables, Datatypes and IOStream/notes.md",
-    "3 - Operators/notes.md",
-    "3 - Control Flow/notes.md"
+    "7 - Complex Data Strucutres/code/5_stack_vs_queue.cpp~",
+    "6 - References and Pointers/6.4 - Notes.md",
+    "6 - References and Pointers/6.3 - Notes.md",
+    "6 - References and Pointers/6.2 - Notes.md",
+    "6 - References and Pointers/6.1 - Notes.md",
+    "7 - Complex Data Strucutres/7.5 - Notes.md",
+    "7 - Complex Data Strucutres/code/5_stack_vs_queue.cpp",
+    "7 - Complex Data Strucutres/code/4_list_example.cpp~",
+    "7 - Complex Data Strucutres/7.4 - Notes.md",
+    "7 - Complex Data Strucutres/7.3 - Notes.md",
+    "7 - Complex Data Strucutres/code/4_list_example.cpp",
+    "7 - Complex Data Strucutres/code/4913",
+    "7 - Complex Data Strucutres/7.2 - Notes.md",
+    "6 - References and Pointers/6.5 - Notes.md",
+    "Assignments/project_1_rewrite.cpp~",
+    "Assignments/project_3.cpp~",
+    "7 - Complex Data Strucutres/code/main",
+    "4 - Functions/notes.md",
+    "6 - References and Pointers/code/2.cpp",
+    "6 - References and Pointers/code/1.cpp",
+    "6 - References and Pointers/Appendix.md",
+    "2 - Operations/2.6 - Notes.md",
+    "2 - Operations/2.5 - Notes.md",
+    "2 - Operations/2.4 - Notes.md",
+    "2 - Operations/2.3 - Notes.md",
+    "2 - Operations/2.2 - Notes.md",
+    "2 - Operations/2.1 - Notes.md",
+    "1 - Variables & Datatypes/1.8 - Notes.md",
+    "1 - Variables & Datatypes/1.7 - Notes.md",
+    "1 - Variables & Datatypes/1.6 - Notes.md",
+    "1 - Variables & Datatypes/1.5 - Notes.md",
+    "1 - Variables & Datatypes/1.4 - Notes.md",
+    "1 - Variables & Datatypes/1.3 - Notes.md",
+    "1 - Variables & Datatypes/1.2 - Notes.md",
+    "1 - Variables & Datatypes/1.1 - Notes.md",
+    "Mind Map.canvas"
   ]
 }
