@@ -153,3 +153,28 @@ void free_word_array(char *word_array[])
 {
         // TODO: implement
 }
+
+int main()
+{
+        // Hey copilot help me write test cases for distance function
+        const char* word1 = "kitten";
+        const char* word2 = "sitting";
+        std::cout << "Distance between " << word1 << " and " << word2 << " is "
+                << distance(word1, word2) << std::endl;
+
+        // Some more test cases please, copilot
+        const char* word3 = "flaw";
+        const char* word4 = "lawn";
+
+        std::cout << "Distance between " << word3 << " and " << word4 << " is "
+                << distance(word3, word4) << std::endl;
+
+        const char* word5 = "intention";
+        const char* word6 = "execution";
+
+        std::cout << "Distance between " << word5 << " and " << word6 << " is "
+                << distance(word5, word6) << std::endl;
+
+        // Expected output: 3, 2, 5
+        return 0;
+}
