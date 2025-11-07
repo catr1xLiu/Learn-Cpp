@@ -1,5 +1,11 @@
 #include "p_4_header.hpp"
 
+#include <cassert>
+#include <cstddef>
+#include <cstring>
+#include <fstream>
+#include <iostream>
+
 /**
  * @brief Calculates the length of a string
  * @param a the constant char array, terminated by '\0'
@@ -143,38 +149,52 @@ std::size_t find(char *array[], std::size_t capacity, const char *str)
         return 0; // TODO: implement
 }
 
-void read_words_from_file(const char *filename, char *(&work_array)[],
-                          std::size_t &numwords, std::size_t max_length)
+/// @brief Reads words from a text file, allocates and populates a word array,
+/// and modifies the number of words
+/// @remark You will need to understand how memory is allocated in order to
+/// delete memory in free_word_array
+/// @param filename the name of the file to be opened
+/// @param word_array given a word array pointer, allocates the word array
+/// @param num_words updates (pass by reference) the number of words found in
+/// the file
+/// @param width the maximum number of letters in a word
+void read_words_from_file(char const *filename, char **&word_array,
+                          std::size_t &num_words, std::size_t width)
 {
-        // TODO: implement
+
+        // Attempt to open the file
+        std::ifstream file{ filename };
+        if (!file.is_open()) {
+                std::cout << "[ERROR] " << filename
+                          << " not found or could not open file" << std::endl;
+        }
+        assert(file.is_open());
+
+        // Read the number of words from the first line of the file
+        file >> num_words;
+
+        // Ignore the newline '\n' character after the number
+        file.ignore();
+
+        /// Allocate memory and initialize the word array
+        word_array = new char *[num_words] {}; // pointers to individual words
+        word_array[0] =
+            new char[num_words * (width + 1)]{}; // contiguous list of all words
+
+        for (std::size_t k{ 1 }; k < num_words;
+             ++k) { // connect the individual word pointers
+                word_array[k] = word_array[k - 1] + width + 1;
+        }
+
+        // Read from the file into the word array
+        for (std::size_t k{ 0 }; k < num_words; ++k) {
+                file >> word_array[k];
+        }
+
+        file.close();
 }
 
 void free_word_array(char *word_array[])
 {
         // TODO: implement
-}
-
-int main()
-{
-        // Hey copilot help me write test cases for distance function
-        const char* word1 = "kitten";
-        const char* word2 = "sitting";
-        std::cout << "Distance between " << word1 << " and " << word2 << " is "
-                << distance(word1, word2) << std::endl;
-
-        // Some more test cases please, copilot
-        const char* word3 = "flaw";
-        const char* word4 = "lawn";
-
-        std::cout << "Distance between " << word3 << " and " << word4 << " is "
-                << distance(word3, word4) << std::endl;
-
-        const char* word5 = "intention";
-        const char* word6 = "execution";
-
-        std::cout << "Distance between " << word5 << " and " << word6 << " is "
-                << distance(word5, word6) << std::endl;
-
-        // Expected output: 3, 2, 5
-        return 0;
 }

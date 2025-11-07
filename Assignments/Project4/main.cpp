@@ -1,17 +1,28 @@
 #include "p_4_header.hpp"
 
 #include <cassert>
-#include <fstream>
+#include <cstddef>
+#include <cstring>
 #include <iostream>
+
+constexpr std::size_t WIDTH{ 20 };
+
+void task1_test();
+void task2_test();
+void task3_test();
+void task4_test();
+void task5_test();
 
 /// @brief This main is used for testing. Feel free to modify the contents.
 /// @remark This file is replaced with a testing main when you submit your
 /// project.
 int main()
 {
-        std::size_t const WIDTH{
-                20
-        }; // set the maximum number of letters in a word
+        task1_test();
+        task2_test();
+        task3_test();
+        task4_test();
+        task5_test();
 
         char **test_words{};          // empty word array
         std::size_t num_test_words{}; // number of words (will be modified when
@@ -21,91 +32,92 @@ int main()
         read_words_from_file("test_words.txt", test_words, num_test_words,
                              WIDTH);
 
-        //////////////////////
-        // Function Testing //
-        //////////////////////
-        char test_string[21]{ "cat" };
-
-        // length
-        std::cout << "The length of " << test_string << " is "
-                  << length(test_string) << std::endl;
-
-        // comapare
-        int test_compare{ compare(test_string, "dog") };
-        if (test_compare < 0) {
-                std::cout << "The test_string comes before dog" << std::endl;
-        } else if (test_compare > 0) {
-                std::cout << "The test_string comes after dog" << std::endl;
-        } else {
-                std::cout << "The test_string is dog" << std::endl;
-        }
-
-        // assign
-        assign(test_string, "bird");
-        std::cout << test_string << std::endl;
-
-        // distance
-        std::cout << "The distance between " << test_string << " and hat is "
-                  << distance(test_string, "hat") << std::endl;
-
-        // is sorted
-        std::size_t num_sorted = is_sorted(test_words, num_test_words);
-        if (num_sorted == num_test_words) {
-                std::cout << "The test_words array is sorted." << std::endl;
-        } else {
-                std::cout << "Only the first " << num_sorted
-                          << " words are sorted." << std::endl;
-        }
-
-        /// Insert additional tests as needed
-
         // deallocate
         free_word_array(test_words);
 
         return 0;
 }
 
-/// @brief Reads words from a text file, allocates and populates a word array,
-/// and modifies the number of words
-/// @remark You will need to understand how memory is allocated in order to
-/// delete memory in free_word_array
-/// @param filename the name of the file to be opened
-/// @param word_array given a word array pointer, allocates the word array
-/// @param num_words updates (pass by reference) the number of words found in
-/// the file
-/// @param width the maximum number of letters in a word
-void read_words_from_file(char const *filename, char **&word_array,
-                          std::size_t &num_words, std::size_t width)
+void task1_test()
 {
+        std::cout << "<-- Test Cases for Task1 -->" << std::endl;
+        const char *test_word = "character";
+        std::cout << "Length of " << test_word << " is " << strlen(test_word)
+                  << std::endl;
+}
 
-        // Attempt to open the file
-        std::ifstream file{ filename };
-        if (!file.is_open()) {
-                std::cout << "[ERROR] " << filename
-                          << " not found or could not open file" << std::endl;
-        }
-        assert(file.is_open());
+void task2_test()
+{
+        std::cout << "<-- Test Cases for Task2 -->" << std::endl;
 
-        // Read the number of words from the first line of the file
-        file >> num_words;
+        // Test 1: Equal strings
+        std::cout << "Test 1 - Equal strings: compare(\"hello\", \"hello\") = "
+                  << compare("hello", "hello") << std::endl;
 
-        // Ignore the newline '\n' character after the number
-        file.ignore();
+        // Test 2: str1 < str2
+        std::cout << "Test 2 - str1 < str2: compare(\"apple\", \"banana\") = "
+                  << compare("apple", "banana") << std::endl;
 
-        /// Allocate memory and initialize the word array
-        word_array = new char *[num_words] {}; // pointers to individual words
-        word_array[0] =
-            new char[num_words * (width + 1)]{}; // contiguous list of all words
+        // Test 3: str1 > str2
+        std::cout << "Test 3 - str1 > str2: compare(\"zebra\", \"apple\") = "
+                  << compare("zebra", "apple") << std::endl;
 
-        for (std::size_t k{ 1 }; k < num_words;
-             ++k) { // connect the individual word pointers
-                word_array[k] = word_array[k - 1] + width + 1;
-        }
+        // Test 4: Prefix comparison
+        std::cout << "Test 4 - Prefix: compare(\"cat\", \"catfish\") = "
+                  << compare("cat", "catfish") << std::endl;
 
-        // Read from the file into the word array
-        for (std::size_t k{ 0 }; k < num_words; ++k) {
-                file >> word_array[k];
-        }
+        // Test 5: Empty string
+        std::cout << "Test 5 - Empty string: compare(\"\", \"hello\") = "
+                  << compare("", "hello") << std::endl;
+}
 
-        file.close();
+void task3_test()
+{
+        std::cout << "<-- Test Cases for Task 3 -->" << std::endl;
+        char original_word[WIDTH]{ "original" };
+
+        // Test case1: equal length
+        const char *word1{ "birthday" };
+        assign(original_word, word1);
+        std::cout << "After replacement 1: " << original_word << std::endl;
+
+        // Test case2: longer length
+        const char *word2{ "entertainment" };
+        assign(original_word, word2);
+        std::cout << "After replacement 2: " << original_word << std::endl;
+
+        // Test case3: shorter lenth
+        const char *word3{ "cat" };
+        assign(original_word, word3);
+        std::cout << "After replacement 3: " << original_word << std::endl;
+}
+
+void task4_test()
+{
+        std::cout << "<-- Test Cases for Task4 -->" << std::endl;
+        // Hey copilot help me write test cases for distance function
+        const char *word1 = "kitten";
+        const char *word2 = "sitting";
+        std::cout << "Distance between " << word1 << " and " << word2 << " is "
+                  << distance(word1, word2) << std::endl;
+
+        // Some more test cases please, copilot
+        const char *word3 = "flaw";
+        const char *word4 = "lawn";
+
+        std::cout << "Distance between " << word3 << " and " << word4 << " is "
+                  << distance(word3, word4) << std::endl;
+
+        const char *word5 = "intention";
+        const char *word6 = "execution";
+
+        std::cout << "Distance between " << word5 << " and " << word6 << " is "
+                  << distance(word5, word6) << std::endl;
+
+        // Expected output: 3, 2, 5
+}
+
+void task5_test()
+{
+        // TODO: test cases for task 5
 }
