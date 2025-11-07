@@ -1,10 +1,7 @@
 #include "p_4_header.hpp"
 
+#include <algorithm>
 #include <cassert>
-#include <cstddef>
-#include <cstring>
-#include <fstream>
-#include <iostream>
 
 /**
  * @brief Calculates the length of a string
@@ -69,6 +66,10 @@ unsigned int distance(const char *str1, const char *str2)
 {
         // Find the length of the two strings
         const std::size_t len1{ length(str1) }, len2{ length(str2) };
+
+        // If equal, distance is 0
+        if (compare(str1, str2) == 0)
+                return 0;
 
         // dis[i][j] is the distance between the substrings str1+i and str2+j
         // Note for i = len1 or j = len2, we think of that is the distance
@@ -179,62 +180,39 @@ void insertion_sort(char *array[], std::size_t capacity)
         }
 }
 
+/**
+ * @breif Removes duplicated entries in a string array
+ * @param array the string array, sorted, each string terminated with '\0'
+ * @param capcity the capcity of array[]
+ * @return the amount of unique entries
+ * */
 std::size_t remove_duplicates(char *array[], std::size_t capacity)
 {
-        return 0; // TODO: implement
+        const char *nullstr = "";
+        std::size_t to{ 1 };
+        for (std::size_t from{ 1 }; from < capacity; from++) {
+                if (compare(array[from - 1], array[from]) != 0) {
+                        assign(array[to++], array[from]);
+                }
+        }
+
+        return to;
 }
 
 std::size_t find(char *array[], std::size_t capacity, const char *str)
 {
-        return 0; // TODO: implement
-}
-
-/// @brief Reads words from a text file, allocates and populates a word array,
-/// and modifies the number of words
-/// @remark You will need to understand how memory is allocated in order to
-/// delete memory in free_word_array
-/// @param filename the name of the file to be opened
-/// @param word_array given a word array pointer, allocates the word array
-/// @param num_words updates (pass by reference) the number of words found in
-/// the file
-/// @param width the maximum number of letters in a word
-void read_words_from_file(char const *filename, char **&word_array,
-                          std::size_t &num_words, std::size_t width)
-{
-
-        // Attempt to open the file
-        std::ifstream file{ filename };
-        if (!file.is_open()) {
-                std::cout << "[ERROR] " << filename
-                          << " not found or could not open file" << std::endl;
-        }
-        assert(file.is_open());
-
-        // Read the number of words from the first line of the file
-        file >> num_words;
-
-        // Ignore the newline '\n' character after the number
-        file.ignore();
-
-        /// Allocate memory and initialize the word array
-        word_array = new char *[num_words] {}; // pointers to individual words
-        word_array[0] =
-            new char[num_words * (width + 1)]{}; // contiguous list of all words
-
-        for (std::size_t k{ 1 }; k < num_words;
-             ++k) { // connect the individual word pointers
-                word_array[k] = word_array[k - 1] + width + 1;
+        std::size_t result{ 0 };
+        for (std::size_t i{ 0 }; i < capacity; i++) {
+                if (distance(str, array[i]) < distance(str, array[result])) {
+                        result = i;
+                }
         }
 
-        // Read from the file into the word array
-        for (std::size_t k{ 0 }; k < num_words; ++k) {
-                file >> word_array[k];
-        }
-
-        file.close();
+        return result;
 }
 
 void free_word_array(char *word_array[])
 {
-        // TODO: implement
+        delete[] word_array[0];
+        delete[] word_array;
 }

@@ -3,6 +3,7 @@
 #include <cassert>
 #include <cstddef>
 #include <cstring>
+#include <fstream>
 #include <iostream>
 
 constexpr std::size_t WIDTH{ 20 };
@@ -12,6 +13,8 @@ void task2_test();
 void task3_test();
 void task4_test();
 void task5_6_7_test();
+void task8_test();
+void task9_test();
 
 /// @brief This main is used for testing. Feel free to modify the contents.
 /// @remark This file is replaced with a testing main when you submit your
@@ -23,6 +26,8 @@ int main()
         task3_test();
         task4_test();
         task5_6_7_test();
+        task8_test();
+        task9_test();
 
         char **test_words{};          // empty word array
         std::size_t num_test_words{}; // number of words (will be modified when
@@ -119,7 +124,7 @@ void task4_test()
 
 void print_array(char *array[], std::size_t cap)
 {
-        std::cout << "{";
+        std::cout << "{ ";
         for (std::size_t i{ 0 }; i < cap; i++) {
                 std::cout << array[i] << " ";
         }
@@ -130,16 +135,16 @@ void task5_6_7_test()
 {
         std::cout << "<-- Test Cases for Task5, 6 and 7 -->" << std::endl;
 
-        char apple[21] = "apple";
-        char banana[21] = "banana";
-        char date[21] = "date";
-        char cat[21] = "cat";
-        char friend_str[21] = "friend";
-        char mouse[21] = "mouse";
-        char file[21] = "file";
-        char zebra[21] = "zebra";
-        char word[21] = "word";
-        char jungle[21] = "jungle";
+        char apple[WIDTH + 1] = "apple";
+        char banana[WIDTH + 1] = "banana";
+        char date[WIDTH + 1] = "date";
+        char cat[WIDTH + 1] = "cat";
+        char friend_str[WIDTH + 1] = "friend";
+        char mouse[WIDTH + 1] = "mouse";
+        char file[WIDTH + 1] = "file";
+        char zebra[WIDTH + 1] = "zebra";
+        char word[WIDTH + 1] = "word";
+        char jungle[WIDTH + 1] = "jungle";
 
         char *words[] = { apple, banana, date,  cat,  friend_str,
                           mouse, file,   zebra, word, jungle };
@@ -171,4 +176,98 @@ void task5_6_7_test()
         std::cout << "Test 5 - All same strings: is_sorted([\"hello\", "
                      "\"hello\", \"hello\"], 3) = "
                   << is_sorted(same_array, 3) << std::endl;
+}
+
+void task8_test()
+{
+        std::cout << "<-- Test Cases for Task 8 -->" << std::endl;
+
+        char word1[WIDTH + 1]{ "apple" };
+        char word2[WIDTH + 1]{ "apple" };
+        char word3[WIDTH + 1]{ "banna" };
+        char word4[WIDTH + 1]{ "cherry" };
+        char word5[WIDTH + 1]{ "cherry" };
+
+        char *words[] = { word1, word2, word3, word4, word5 };
+
+        std::size_t cap = remove_duplicates(words, 5);
+        print_array(words, cap);
+}
+
+void task9_test()
+{
+        std::cout << "<-- Test Cases for Task 9 -->" << std::endl;
+
+        char apple[WIDTH + 1] = "apple";
+        char banana[WIDTH + 1] = "banana";
+        char date[WIDTH + 1] = "date";
+        char cat[WIDTH + 1] = "cat";
+        char friend_str[WIDTH + 1] = "friend";
+        char mouse[WIDTH + 1] = "mouse";
+        char file[WIDTH + 1] = "file";
+        char zebra[WIDTH + 1] = "zebra";
+        char word[WIDTH + 1] = "word";
+        char jungle[WIDTH + 1] = "jungle";
+
+        char *words[] = { apple, banana, date,  cat,  friend_str,
+                          mouse, file,   zebra, word, jungle };
+
+        std::cout << "words = ";
+        print_array(words, 10);
+        const char word1[WIDTH + 1] = "friend";
+        std::cout << "find(friend) = " << find(words, 10, word1) << std::endl;
+
+        const char word2[WIDTH + 1] = "french";
+        std::cout << "find(french) = " << find(words, 10, word2) << std::endl;
+
+        const char word3[WIDTH + 1] = "jungle";
+        std::cout << "find(jungle) = " << find(words, 10, word3) << std::endl;
+
+        const char word4[WIDTH + 1] = "fire";
+        std::cout << "find(fire) = " << find(words, 10, word4) << std::endl;
+}
+
+/// @brief Reads words from a text file, allocates and populates a word array,
+/// and modifies the number of words
+/// @remark You will need to understand how memory is allocated in order to
+/// delete memory in free_word_array
+/// @param filename the name of the file to be opened
+/// @param word_array given a word array pointer, allocates the word array
+/// @param num_words updates (pass by reference) the number of words found in
+/// the file
+/// @param width the maximum number of letters in a word
+void read_words_from_file(char const *filename, char **&word_array,
+                          std::size_t &num_words, std::size_t width)
+{
+
+        // Attempt to open the file
+        std::ifstream file{ filename };
+        if (!file.is_open()) {
+                std::cout << "[ERROR] " << filename
+                          << " not found or could not open file" << std::endl;
+        }
+        assert(file.is_open());
+
+        // Read the number of words from the first line of the file
+        file >> num_words;
+
+        // Ignore the newline '\n' character after the number
+        file.ignore();
+
+        /// Allocate memory and initialize the word array
+        word_array = new char *[num_words] {}; // pointers to individual words
+        word_array[0] =
+            new char[num_words * (width + 1)]{}; // contiguous list of all words
+
+        for (std::size_t k{ 1 }; k < num_words;
+             ++k) { // connect the individual word pointers
+                word_array[k] = word_array[k - 1] + width + 1;
+        }
+
+        // Read from the file into the word array
+        for (std::size_t k{ 0 }; k < num_words; ++k) {
+                file >> word_array[k];
+        }
+
+        file.close();
 }
