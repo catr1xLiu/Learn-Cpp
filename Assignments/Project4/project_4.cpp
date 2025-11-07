@@ -34,7 +34,7 @@ int compare(const char *str1, const char *str2)
         // The first digit that is different tells us which word comes first
         if (*str1 < *str2)
                 return -1;
-        if (*str2 > *str1)
+        if (*str1 > *str2)
                 return 1;
 
         // If the current digit is equal, move to next using recurssion
@@ -124,19 +124,59 @@ unsigned int distance(const char *str1, const char *str2)
         return dis[0][0];
 }
 
+/**
+ * @param array an array of string, each string terminated by '\0'
+ * @param capcity the capcity of the array
+ * @return until what index is the string array sorted, capcity if the entire
+ * array is sorted
+ * */
 std::size_t is_sorted(char **array, std::size_t capacity)
 {
-        return 0; // TODO: implement
+        for (std::size_t i{ 1 }; i < capacity; i++) {
+                if (compare(array[i], array[i - 1]) < 0)
+                        return i;
+        }
+        return capacity;
 }
 
+/**
+ * @brief inserts the last string in the array to appropriate position
+ * @param array the array of strings, each string terminated by '\0'
+ * @param capcity the capcity of (part of) the string array that we have to deal
+ * with
+ * */
 void insert(char *array[], std::size_t capacity)
 {
-        // TODO: implement
+        // Step1, create a copy of the string that we are operating
+        char str[21];
+        assign(str, array[capacity - 1]);
+        std::size_t move_to{ capacity - 1 };
+        for (std::size_t i{ 0 }; i < capacity; i++) {
+                if (compare(str, array[i]) < 0) {
+                        // if str occurs before array[i]
+                        move_to = i; // Move it before array[i]
+                        break;
+                }
+        }
+
+        // Perform the move-to action
+        // Shift the string forward
+        for (std::size_t i{ capacity - 1 }; i > move_to; i--) {
+                // Replace every digit with the one before it
+                assign(array[i], array[i - 1]);
+        }
+        // Place the targeted string
+        assign(array[move_to], str);
 }
 
+/**
+ * @brief sort the string array in dictionary order using insertion sort
+ * */
 void insertion_sort(char *array[], std::size_t capacity)
 {
-        // TODO: implement
+        for (std::size_t i = 2; i <= capacity; i++) {
+                insert(array, i);
+        }
 }
 
 std::size_t remove_duplicates(char *array[], std::size_t capacity)
