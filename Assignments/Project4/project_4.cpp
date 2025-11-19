@@ -8,7 +8,7 @@
  * @param a the constant char array, terminated by '\0'
  * @return the length
  * */
-std::size_t length(const char *a)
+std::size_t length(const char* a)
 {
         // Use a recursive algorithm for simplicity
         return *a == '\0' ? 0 : length(a + 1) + 1;
@@ -21,7 +21,7 @@ std::size_t length(const char *a)
  * @return -1 if str1 occurs before str2, 1 if str2 occurs before str1, 0 if the
  * two strings are equal
  * */
-int compare(const char *str1, const char *str2)
+int compare(const char* str1, const char* str2)
 {
         // If both strings are ended
         // They are equal (we've already compared previous digit)
@@ -43,7 +43,7 @@ int compare(const char *str1, const char *str2)
  * @param str1 the target string, with sufficient memory allocated
  * @param str2 the source string terminated by '\0'
  * */
-void assign(char *str1, const char *str2)
+void assign(char* str1, const char* str2)
 {
         // Copy the current digit
         *str1 = *str2;
@@ -62,7 +62,7 @@ void assign(char *str1, const char *str2)
  * @return the minimum amount of EDITS (insertion, deletion or modification)
  * needed to turn str1 to str2
  * */
-unsigned int distance(const char *str1, const char *str2)
+unsigned int distance(const char* str1, const char* str2)
 {
         // Find the length of the two strings
         const std::size_t len1{ length(str1) }, len2{ length(str2) };
@@ -118,7 +118,7 @@ unsigned int distance(const char *str1, const char *str2)
                         // We take the MINIMUM of the
                         // distance after every possible operation
                         dis[i][j] = std::min(
-                            std::min(dis_modified, dis_inserted), dis_deleted);
+                                std::min(dis_modified, dis_inserted), dis_deleted);
                 }
         }
 
@@ -131,7 +131,7 @@ unsigned int distance(const char *str1, const char *str2)
  * @return until what index is the string array sorted, capcity if the entire
  * array is sorted
  * */
-std::size_t is_sorted(char **array, std::size_t capacity)
+std::size_t is_sorted(char** array, std::size_t capacity)
 {
         for (std::size_t i{ 1 }; i < capacity; i++) {
                 if (compare(array[i], array[i - 1]) < 0)
@@ -146,7 +146,7 @@ std::size_t is_sorted(char **array, std::size_t capacity)
  * @param capcity the capcity of (part of) the string array that we have to deal
  * with
  * */
-void insert(char *array[], std::size_t capacity)
+void insert(char* array[], std::size_t capacity)
 {
         // Step1, create a copy of the string that we are operating
         char str[21];
@@ -173,7 +173,7 @@ void insert(char *array[], std::size_t capacity)
 /**
  * @brief sort the string array in dictionary order using insertion sort
  * */
-void insertion_sort(char *array[], std::size_t capacity)
+void insertion_sort(char* array[], std::size_t capacity)
 {
         for (std::size_t i = 2; i <= capacity; i++) {
                 insert(array, i);
@@ -186,9 +186,9 @@ void insertion_sort(char *array[], std::size_t capacity)
  * @param capcity the capcity of array[]
  * @return the amount of unique entries
  * */
-std::size_t remove_duplicates(char *array[], std::size_t capacity)
+std::size_t remove_duplicates(char* array[], std::size_t capacity)
 {
-        const char *nullstr = "";
+        const char* nullstr = "";
         std::size_t to{ 1 };
         for (std::size_t from{ 1 }; from < capacity; from++) {
                 if (compare(array[from - 1], array[from]) != 0) {
@@ -199,7 +199,7 @@ std::size_t remove_duplicates(char *array[], std::size_t capacity)
         return to;
 }
 
-std::size_t find(char *array[], std::size_t capacity, const char *str)
+std::size_t find(char* array[], std::size_t capacity, const char* str)
 {
         std::size_t result{ 0 };
         for (std::size_t i{ 0 }; i < capacity; i++) {
@@ -211,7 +211,7 @@ std::size_t find(char *array[], std::size_t capacity, const char *str)
         return result;
 }
 
-void free_word_array(char *word_array[])
+void free_word_array(char* word_array[])
 {
         delete[] word_array[0];
         delete[] word_array;
