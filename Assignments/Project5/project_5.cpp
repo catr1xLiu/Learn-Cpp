@@ -104,6 +104,7 @@ public:
 
 private:
         Node* p_head_;
+        std::size_t length;
 
         friend std::ostream& operator<<(std::ostream& out, Set const& rhs);
 };
@@ -135,15 +136,16 @@ private:
 
 // Node constructor
 Node::Node(int new_value, Node* new_next) {
-
+        this->value_ = new_value;
+        this->next_ = new_next;
 }
 
 int Node::value() const {
-        return 0;
+        return this->value_;
 }
 
 Node* Node::next() const {
-        return nullptr;
+        return this->next_;
 }
 
 
@@ -153,68 +155,140 @@ Node* Node::next() const {
 
 // Initializing constructor
 Set::Set(std::initializer_list<int> initial_values) {
+        p_head_ = nullptr;
+        length = 0;
+
+        for (const int& value : initial_values) {
+                insert(value);
+        }
 }
 
-// Destructor
-Set::~Set() {
-}
 
 // Copy constructor
 Set::Set(Set const& orig) {
+        p_head_ = nullptr;
+        Node* p_node = orig.p_head_;
+
+        (*this) = orig; // Use copy assignment to copy value
 }
 
 // Move constructor
 Set::Set(Set&& orig) {
+        p_head_ = orig.p_head_;
+        orig.p_head_ = nullptr;
+        length = orig.length;
+        orig.length = 0;
 }
 
 // Copy assignment
 Set& Set::operator=(Set const& orig) {
+        if (&orig == this) {
+                // if two pointers are equal, do nothing
+                return *this;
+        }
+
+        clear();
+        Node* p_node{ orig.p_head_ };
+        for (std::size_t i{ 0 }; i < orig.size(); i++) {
+                insert(p_node->value());
+                p_node = p_node->next();
+        }
+
         return *this;
 }
 
 // Move assignment
 Set& Set::operator=(Set&& orig) {
+        Node* p_head_ = orig.p_head_;
+        orig.p_head_ = nullptr;
+        length = orig.length;
+        orig.length = 0;
+
         return *this;
 }
 
-// Empty
-bool Set::empty() const {
-        return false;
+// Destructor
+Set::~Set() {
+        clear();
 }
 
 // Size
 std::size_t Set::size() const {
-        return 0;
+        return length;
+}
+
+// Empty
+bool Set::empty() const {
+        return length == 0;
 }
 
 
 // Clear
 void Set::clear() {
-
+        while (length != 0) {
+                erase(p_head_->value());
+        }
 }
 
 // Find
 Node* Set::find(int const& item) const {
+        Node* node = p_head_;
+        for (std::size_t i{ 0 }; i < length; i++) {
+                if (node->value() == item) {
+                        return node;
+                }
+                node = node->next();
+        }
 
         return nullptr;
 }
 
 // Insert the item into the set
 std::size_t Set::insert(int const& item) {
-        return 0;
+        if (find(item)) {
+                return 0;
+        }
+        p_head_ = new Node(item, p_head_);
+        length++;
+        return 1;
 }
 
 // Insert all the items in the array
 std::size_t Set::insert(int         const array[],
         std::size_t const begin,
         std::size_t const end) {
-        return 0;
+        std::size_t result{ 0 };
+        for (std::size_t i{ begin }; i < end; i++) {
+                result += insert(array[i]);
+        }
+        return result;
 }
 
 
 // Remove the item from the set and
 // return the number of items removed.
 std::size_t Set::erase(int const& item) {
+        Node* p_node = p_head_;
+        Node* p_prev_node = nullptr;
+        for (std::size_t i{ 0 }; i < length; i++) {
+                if (p_node->value() != item) {
+                        // Step forward
+                        p_prev_node = p_node;
+                        p_node = p_node->next();
+                        continue;
+                }
+                // Connect next node to previous node
+                if (p_prev_node == nullptr) {
+                        p_head_ = p_node->next();
+                }
+                else {
+                        p_prev_node->next_ = p_node->next();
+                }
+                // Delete node and return
+                delete p_node;
+                length--;
+                return 1;
+        }
         return 0;
 }
 

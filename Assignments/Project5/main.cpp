@@ -17,70 +17,71 @@ int main() {
         // The following tests are commented out using a multit line comment /* */.
         // As you implement functions slowly more the comment start to expose more test cases.
         Set A{};
+
         std::cout << "A: " << A << std::endl;  // {}
 
-        /*  <-- comment start
-          A.insert( 1 );
-          A.insert( 2 );
-          A.insert( 3 );
+        A.insert(1);
+        A.insert(2);
+        A.insert(3);
 
-          Set B{2,3,4};
-          Set C{3,3,4,4,4,5,5,5,5};
+        Set B{ 2,3,4 };
+        Set C{ 3,3,4,4,4,5,5,5,5 };
 
-          std::cout << std::endl << "--- Set initialization / insert ---" << std::endl;
-          std::cout << "A: " << A << std::endl;  // {1,2,3}
-          std::cout << "B: " << B << std::endl;  // {2,3,4}
-          std::cout << "C: " << C << std::endl;  // {3,4,5}
+        std::cout << std::endl << "--- Set initialization / insert ---" << std::endl;
+        std::cout << "A: " << A << std::endl;  // {1,2,3}
+        std::cout << "B: " << B << std::endl;  // {2,3,4}
+        std::cout << "C: " << C << std::endl;  // {3,4,5}
 
-          std::cout << std::endl << "--- size / empty ---" << std::endl;
-          std::cout << "size of A:  " << A.size()  << std::endl; // 3
-          std::cout << "is A empty: " << A.empty() << std::endl; // 0 (false)
+        std::cout << std::endl << "--- size / empty ---" << std::endl;
+        std::cout << "size of A:  " << A.size() << std::endl; // 3
+        std::cout << "is A empty: " << A.empty() << std::endl; // 0 (false)
 
-          assert(A.find(3) != nullptr);
-          assert(A.find(4) == nullptr);
+        assert(A.find(3) != nullptr);
+        assert(A.find(4) == nullptr);
 
-          std::cout << std::endl << "--- erase / instert ---" << std::endl;
-          std::cout << "erase 3: " << A.erase(3) << std::endl; // 1
-          std::cout << "erase 3: " << A.erase(3) << std::endl; // 0
-          std::cout << "A:       " << A << std::endl;          // {1,2}
+        std::cout << std::endl << "--- erase / instert ---" << std::endl;
+        std::cout << "erase 3: " << A.erase(3) << std::endl; // 1
+        std::cout << "erase 3: " << A.erase(3) << std::endl; // 0
+        std::cout << "A:       " << A << std::endl;          // {1,2}
 
-          int insert_values[5]{1,2,3,4,5};
-          std::cout << "insert [1,2,3]: " << A.insert(insert_values, 0, 3) << std::endl; // 1
-          std::cout << "A:       " << A << std::endl;   // {1,2,3}
+        int insert_values[5]{ 1,2,3,4,5 };
+        std::cout << "insert [1,2,3]: " << A.insert(insert_values, 0, 3) << std::endl; // 1
+        std::cout << "A:       " << A << std::endl;   // {1,2,3}
 
-          std::cout << std::endl << "--- Copy constructor / clear ---" << std::endl;
-          Set *D { new Set {A} };
-          std::cout << "A:       " <<  A << std::endl;  // {1,2,3}
-          std::cout << "B:       " <<  B << std::endl;  // {2,3,4}
-          std::cout << "D:       " << *D << std::endl;  // {1,2,3}
-          *D = B;
-          std::cout << "D = B:   " << *D << std::endl;  // {2,3,4}
-          D->clear();
-          std::cout << "D clear: " << *D << std::endl;  // {}
-          assert(D->empty() == true);
-          delete D;
-          D = nullptr;
+        std::cout << std::endl << "--- Copy constructor / clear ---" << std::endl;
+        Set* D{ new Set {A} };
+        std::cout << "A:       " << A << std::endl;  // {1,2,3}
+        std::cout << "B:       " << B << std::endl;  // {2,3,4}
+        std::cout << "D:       " << *D << std::endl;  // {1,2,3}
+        *D = B;
+        std::cout << "D = B:   " << *D << std::endl;  // {2,3,4}
+        D->clear();
+        std::cout << "D clear: " << *D << std::endl;  // {}
+        assert(D->empty() == true);
+        delete D;
+        D = nullptr;
 
-          // Set operations
-          std::cout << std::endl << "--- Set Operations ---" << std::endl;
-          std::cout << "A union B: " << ( A | B ) << std::endl;
-          std::cout << "A intersect B: " << ( A & B ) << std::endl;
-          std::cout << "Symmetric difference of A and B: " << ( A ^ B ) << std::endl;
-          std::cout << "A minus B: " << ( A - B ) << std::endl;
-          std::cout << std::endl;
+        /*
+        // Set operations
+        std::cout << std::endl << "--- Set Operations ---" << std::endl;
+        std::cout << "A union B: " << (A | B) << std::endl;
+        std::cout << "A intersect B: " << (A & B) << std::endl;
+        std::cout << "Symmetric difference of A and B: " << (A ^ B) << std::endl;
+        std::cout << "A minus B: " << (A - B) << std::endl;
+        std::cout << std::endl;
 
-          std::cout << "A union C: " << ( A | C ) << std::endl;
-          std::cout << "A intersect C: " << ( A & C ) << std::endl;
-          std::cout << "Symmetric difference of A and C: " << ( A ^ C ) << std::endl;
-          std::cout << "A minus C: " << ( A - C ) << std::endl;
-          std::cout << std::endl;
+        std::cout << "A union C: " << (A | C) << std::endl;
+        std::cout << "A intersect C: " << (A & C) << std::endl;
+        std::cout << "Symmetric difference of A and C: " << (A ^ C) << std::endl;
+        std::cout << "A minus C: " << (A - C) << std::endl;
+        std::cout << std::endl;
 
-          std::cout << "B union C: " << ( B | C ) << std::endl;
-          std::cout << "B intersect C: " << ( B & C ) << std::endl;
-          std::cout << "Symmetric difference of B and C: " << ( B ^ C ) << std::endl;
-          std::cout << "B minus C: " << ( B - C ) << std::endl;
-          std::cout << std::endl;
-        */
+        std::cout << "B union C: " << (B | C) << std::endl;
+        std::cout << "B intersect C: " << (B & C) << std::endl;
+        std::cout << "Symmetric difference of B and C: " << (B ^ C) << std::endl;
+        std::cout << "B minus C: " << (B - C) << std::endl;
+        std::cout << std::endl;
+
         /* Expected output from set operations:
             --- Set Operations ---
             A union B: {4, 1, 2, 3}
