@@ -176,10 +176,8 @@ Set::Set(Set const& orig) {
 
 // Move constructor
 Set::Set(Set&& orig) {
-        Node* p_head_ = orig.p_head_;
-        orig.p_head_ = nullptr;
-        length = orig.length;
-        orig.length = 0;
+        std::swap(p_head_, orig.p_head_);
+        std::swap(length, orig.length);
 }
 
 // Copy assignment
