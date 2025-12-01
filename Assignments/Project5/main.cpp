@@ -15,9 +15,9 @@
 int main() {
 
         // The following tests are commented out using a multit line comment /* */.
-        // As you implement functions slowly more the comment start to expose more test cases.
-        Set A{};
+        //         As you implement functions slowly more the comment start to expose more test cases.
 
+        Set A{};
         std::cout << "A: " << A << std::endl;  // {}
 
         A.insert(1);
@@ -61,7 +61,6 @@ int main() {
         delete D;
         D = nullptr;
 
-        /*
         // Set operations
         std::cout << std::endl << "--- Set Operations ---" << std::endl;
         std::cout << "A union B: " << (A | B) << std::endl;
@@ -99,6 +98,12 @@ int main() {
             Symmetric difference of B and C: {5, 2}
             B minus C: {2}
         */
+
+        std::cout << std::endl << "--- Merge Operation ---" << std::endl;
+        Set E{ 1,2,3,7,8,9 }, F{ 3,4,5,7,9,11 };
+        std::cout << "Merging " << F << " into " << E << std::endl;
+        std::cout << "Moved " << E.merge(F) << " items" << std::endl;
+        std::cout << "E = " << E << ", F= " << F << std::endl;
 
         return 0;
 }

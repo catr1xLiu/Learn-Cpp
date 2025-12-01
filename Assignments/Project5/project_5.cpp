@@ -72,6 +72,11 @@ public:
         // return the number of items removed.
         std::size_t erase(int const& item);
 
+        // Detatch an item from the linked list
+        // The item remains in memory
+        // Caller takes ownership of the node
+        Node* detatch(int const& item);
+
         // Move any items from 'other', whose values
         // do not appear in 'this', to 'this'
         // Leave any items that already appear
@@ -103,8 +108,8 @@ public:
         bool operator!=(Set const& other) const;
 
 private:
-        Node* p_head_;
-        std::size_t length;
+        Node* p_head_ = nullptr;
+        std::size_t length = 0;
 
         friend std::ostream& operator<<(std::ostream& out, Set const& rhs);
 };
@@ -166,15 +171,12 @@ Set::Set(std::initializer_list<int> initial_values) {
 
 // Copy constructor
 Set::Set(Set const& orig) {
-        p_head_ = nullptr;
-        Node* p_node = orig.p_head_;
-
-        (*this) = orig; // Use copy assignment to copy value
+        (*this) = orig;
 }
 
 // Move constructor
 Set::Set(Set&& orig) {
-        p_head_ = orig.p_head_;
+        Node* p_head_ = orig.p_head_;
         orig.p_head_ = nullptr;
         length = orig.length;
         orig.length = 0;
@@ -182,14 +184,14 @@ Set::Set(Set&& orig) {
 
 // Copy assignment
 Set& Set::operator=(Set const& orig) {
-        if (&orig == this) {
-                // if two pointers are equal, do nothing
+        if (*this == orig) {
+                // if two sets are equal, do nothing
                 return *this;
         }
 
         clear();
         Node* p_node{ orig.p_head_ };
-        for (std::size_t i{ 0 }; i < orig.size(); i++) {
+        for (std::size_t i{ 0 }; i < orig.size() && p_node != nullptr; i++) {
                 insert(p_node->value());
                 p_node = p_node->next();
         }
@@ -225,19 +227,19 @@ bool Set::empty() const {
 
 // Clear
 void Set::clear() {
-        while (length != 0) {
+        while (length != 0 && p_head_ != nullptr) {
                 erase(p_head_->value());
         }
 }
 
 // Find
 Node* Set::find(int const& item) const {
-        Node* node = p_head_;
-        for (std::size_t i{ 0 }; i < length; i++) {
-                if (node->value() == item) {
-                        return node;
+        Node* p_node = p_head_;
+        for (std::size_t i{ 0 }; i < length && p_node != nullptr; i++) {
+                if (p_node->value() == item) {
+                        return p_node;
                 }
-                node = node->next();
+                p_node = p_node->next();
         }
 
         return nullptr;
@@ -264,19 +266,16 @@ std::size_t Set::insert(int         const array[],
         return result;
 }
 
-
-// Remove the item from the set and
-// return the number of items removed.
-std::size_t Set::erase(int const& item) {
+Node* Set::detatch(int const& item) {
         Node* p_node = p_head_;
         Node* p_prev_node = nullptr;
-        for (std::size_t i{ 0 }; i < length; i++) {
+        for (std::size_t i{ 0 }; i < length && p_node != nullptr; i++) {
                 if (p_node->value() != item) {
-                        // Step forward
                         p_prev_node = p_node;
                         p_node = p_node->next();
                         continue;
                 }
+
                 // Connect next node to previous node
                 if (p_prev_node == nullptr) {
                         p_head_ = p_node->next();
@@ -284,12 +283,24 @@ std::size_t Set::erase(int const& item) {
                 else {
                         p_prev_node->next_ = p_node->next();
                 }
-                // Delete node and return
-                delete p_node;
+
                 length--;
-                return 1;
+                p_node->next_ = nullptr;
+                return p_node;
         }
-        return 0;
+        return nullptr;
+}
+
+// Remove the item from the set and
+// return the number of items removed.
+std::size_t Set::erase(int const& item) {
+        Node* detatched = detatch(item);
+        if (detatched == nullptr) {
+                return 0;
+        }
+
+        delete detatched;
+        return 1;
 }
 
 // Move any items from 'other', whose values
@@ -298,74 +309,154 @@ std::size_t Set::erase(int const& item) {
 // in both sets, in both sets. 
 std::size_t Set::merge(Set& other) {
         std::size_t count{ 0 };
-        return 0;
+
+        Node* p_node = other.p_head_;
+        for (std::size_t i{ 0 }, size{ other.size() }; i < size && p_node != nullptr; i++) {
+                int value = p_node->value();
+                p_node = p_node->next();
+
+                // If the value already exists in this set, skip
+                if (find(value) != nullptr) continue;
+
+
+                // Otherwise, detatch the node
+                Node* detatched = other.detatch(value);
+                assert(detatched != nullptr);
+
+                // Insert detatched node pointer to this set manually
+                detatched->next_ = p_head_;
+                p_head_ = detatched;
+                count++; length++;
+        }
+
+        return count;
 }
 
 //////////////////////
 /// Set operations ///
 //////////////////////
 Set& Set::operator|=(Set const& other) {
+        Node* p_node = other.p_head_;
+        for (std::size_t i{ 0 }; i < other.size() && p_node != nullptr; i++) {
+                if (find(p_node->value()) == nullptr) {
+                        insert(p_node->value());
+                }
+                p_node = p_node->next();
+        }
         return *this;
 }
 
 Set& Set::operator&=(Set const& other) {
+        Node* p_node = p_head_;
+        for (std::size_t i{ 0 }, orig_size{ size() }; i < orig_size && p_node != nullptr; i++) {
+                int value = p_node->value();
+                p_node = p_node->next();
+                if (other.find(value) == nullptr) {
+                        erase(value);
+                }
+        }
         return *this;
 }
 
 Set& Set::operator^=(Set const& other) {
+        Node* p_node = other.p_head_;
+        for (std::size_t i{ 0 }; i < other.size() && p_node != nullptr; i++) {
+                if (find(p_node->value()) == nullptr) {
+                        // If the node does NOT exist in our set, add it.
+                        insert(p_node->value());
+                }
+                else {
+                        // If the node ALREADY exists in our set, erase it
+                        erase(p_node->value());
+                }
+                // Advance pointer forward
+                p_node = p_node->next();
+        }
         return *this;
 }
 
 Set& Set::operator-=(Set const& other) {
+        Node* p_node = other.p_head_;
+
+        for (std::size_t i{ 0 }; i < other.size() && p_node != nullptr; i++) {
+                erase(p_node->value());
+                p_node = p_node->next();
+        }
         return *this;
 }
 
 Set Set::operator|(Set const& other) const {
-        Set result{};
+        Set result{ *this };
+        result |= other;
         return result;
 }
 
 Set Set::operator&(Set const& other) const {
-        Set result{};
+        Set result{ *this };
+        result &= other;
         return result;
 }
 
 Set Set::operator^(Set const& other) const {
-        Set result{};
+        Set result{ *this };
+        result ^= other;
         return result;
 }
 
 Set Set::operator-(Set const& other) const {
-        Set result{};
+        Set result{ *this };
+        result -= other;
         return result;
 }
 
-// Returns 'true' if the 'other' set
-// is a subset of 'this' set; that is,
-// all entries in the 'other' set are
-// also in this set.
-bool Set::operator>=(Set const& other) const {
-        return false;
-}
-
-bool Set::operator<=(Set const& other) const {
-        return false;
-}
-
-bool Set::operator>(Set const& other) const {
-        return false;
-}
-
-bool Set::operator<(Set const& other) const {
-        return false;
-}
+//////////////////////
+/// Set compartors ///
+//////////////////////
 
 bool Set::operator==(Set const& other) const {
-        return false;
+        // Compare address first
+        if (this == &other) return true;
+
+        // Then, compare length
+        if (this->size() != other.size()) return false;
+
+        Node* p_node = p_head_;
+        for (std::size_t i{ 0 }; i < length && p_node != nullptr; i++) {
+                if (other.find(p_node->value()) == nullptr) return false;
+                p_node = p_node->next();
+        }
+
+        return true;
 }
 
 bool Set::operator!=(Set const& other) const {
-        return false;
+        return !(*this == other);
+}
+
+bool Set::operator<=(Set const& other) const {
+        // First, compare size
+        if (size() > other.size()) return false;
+
+        // Then, check if all items of this set also exists in the other
+        Node* p_node = p_head_;
+        for (std::size_t i{ 0 }; i < length && p_node != nullptr; i++) {
+                if (other.find(p_node->value()) == nullptr) return false;
+                p_node = p_node->next();
+        }
+        return true;
+}
+
+bool Set::operator>=(Set const& other) const {
+        // We use the function above
+        return other <= *this;
+}
+
+bool Set::operator<(Set const& other) const {
+        return (*this <= other) && (*this != other);
+}
+
+bool Set::operator>(Set const& other) const {
+        return (*this >= other) && (*this != other);
 }
 
 
