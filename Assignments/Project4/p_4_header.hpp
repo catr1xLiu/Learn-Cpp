@@ -29,19 +29,21 @@
 // Function declarations for functions expected in main.cpp
 int main();
 void read_words_from_file( // 2.10
-    char const *filename, char **&work_array, std::size_t &numwords,
+    char const* filename,
+    char**& work_array,
+    std::size_t& numwords,
     std::size_t max_length);
 
 // Function declarations for functions expected in project_4.cpp
-std::size_t length(char const *a);                                      // 2.1
-int compare(char const *str1, char const *str2);                        // 2.2
-void assign(char *str1, char const *str2);                              // 2.3
-unsigned int distance(char const *str1, char const *str2);              // 2.4
-std::size_t is_sorted(char *array[], std::size_t capacity);             // 2.5
-void insert(char *array[], std::size_t capacity);                       // 2.6
-void insertion_sort(char *array[], std::size_t capacity);               // 2.7
-std::size_t remove_duplicates(char *array[], std::size_t capacity);     // 2.8
-std::size_t find(char *array[], std::size_t capacity, char const *str); // 2.9
-void free_word_array(char **word_array);                                // 2.11
+std::size_t length(char const* a);                                      // 2.1
+int compare(char const* str1, char const* str2);                        // 2.2
+void assign(char* str1, char const* str2);                              // 2.3
+unsigned int distance(char const* str1, char const* str2);              // 2.4
+std::size_t is_sorted(char* array[], std::size_t capacity);             // 2.5
+void insert(char* array[], std::size_t capacity);                       // 2.6
+void insertion_sort(char* array[], std::size_t capacity);               // 2.7
+std::size_t remove_duplicates(char* array[], std::size_t capacity);     // 2.8
+std::size_t find(char* array[], std::size_t capacity, char const* str); // 2.9
+void free_word_array(char** word_array);                                // 2.11
 
 #endif
